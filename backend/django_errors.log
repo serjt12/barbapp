@@ -1,0 +1,66 @@
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (1, sdasd, asdasd, asdasdas, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (2, sdasd, asdasd, asdasdas, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (3, sdasd, asdasd, asdasdas, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (4, 13, 123, 123, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (5, name barber, bello, 123456, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (6, name barber, bello, 123456, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (7, 123, 123, 123, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (8, 123, 123, 123, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (9, 123, 123, 123, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (10, 123, 123, 123, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (11, 13231, 12312, 123123, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (12, 13231, 12312, 123123, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (13, 13231, 12312, 123123, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (14, 213213, 123123, 1231231, null).
+
+Internal Server Error: /api/shops/
+Unhandled Exception: null value in column "owner_id" of relation "salon_shop" violates not-null constraint
+DETAIL:  Failing row contains (15, qwewqe, qweqwe, 123123, null).
+
+Internal Server Error: /api/shops/
+Token validation error: Token used too early, 1723556961 < 1723556963. Check that your computer's clock is set correctly.
+Token validation error: Token used too early, 1723557017 < 1723557019. Check that your computer's clock is set correctly.
+Token validation error: Token used too early, 1723557257 < 1723557260. Check that your computer's clock is set correctly.
+Token validation error: Token used too early, 1723558168 < 1723558169. Check that your computer's clock is set correctly.
+Token validation error: Token used too early, 1723558517 < 1723558519. Check that your computer's clock is set correctly.
+Token validation error: Token used too early, 1723558973 < 1723558975. Check that your computer's clock is set correctly.
