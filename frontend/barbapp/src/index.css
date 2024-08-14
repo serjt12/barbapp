@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.text-overlay {
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+}
