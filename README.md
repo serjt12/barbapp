@@ -105,7 +105,6 @@ npm start
 The application requires the following environment variables:
 
 -   SECRET_KEY: Django secret key
--   DEBUG: Set to `True` for development, `False` for production
 -   DATABASE_URL: PostgreSQL database URL
 -   GOOGLE_CLIENT_ID: Google OAuth2 Client ID
 -   GOOGLE_CLIENT_SECRET: Google OAuth2 Client Secret

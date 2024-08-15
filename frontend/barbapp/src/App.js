@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
+import Feed from "./pages/Feed";
+import ShopDetail from "./pages/ShopDetail";
 import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
@@ -12,15 +14,25 @@ function App() {
         <Router>
             <div>
                 <Navbar />
-                <Routes>
-                    <Route path="/" exact element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route
-                        path="/profile"
-                        element={<PrivateRoute component={Profile} />}
-                    />
-                </Routes>
+                <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+                    <Routes>
+                        <Route path="/" exact element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route
+                            path="/profile"
+                            element={<PrivateRoute component={Profile} />}
+                        />
+                        <Route
+                            path="/feed"
+                            element={<PrivateRoute component={Feed} />}
+                        />
+                        <Route
+                            path="/shop/:id"
+                            element={<PrivateRoute component={ShopDetail} />}
+                        />
+                    </Routes>
+                </div>
             </div>
         </Router>
     );
