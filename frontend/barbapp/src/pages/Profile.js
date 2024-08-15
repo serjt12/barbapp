@@ -42,11 +42,11 @@ const Profile = () => {
 
     const handleLogout = async () => {
         try {
-            await axiosInstance.post("/logout/"); // Call the logout endpoint
-            dispatch(logout()); // Update Redux state
-            localStorage.removeItem("accessToken"); // Remove JWT from localStorage
-            localStorage.removeItem("refreshToken"); // Remove refresh token from localStorage
-            navigate("/login"); // Redirect to login page
+            await axiosInstance.post("/logout/");
+            dispatch(logout());
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            navigate("/login");
         } catch (error) {
             console.error("Logout error:", error);
         }
@@ -68,14 +68,14 @@ const Profile = () => {
                 formData
             );
             console.log("Profile updated:", response.data);
-            dispatch(updateUser(formData)); // Update Redux state with new user data
-            setShowButtons(false); // Hide buttons after update
+            dispatch(updateUser(formData));
+            setShowButtons(false);
             setIsEditing({
                 first_name: false,
                 last_name: false,
                 email: false,
                 profile_picture: false,
-            }); // Reset editing states
+            });
         } catch (error) {
             if (error.response?.data) {
                 setErrors(error.response.data);
@@ -91,7 +91,7 @@ const Profile = () => {
                 ...prevState,
                 [field]: !prevState[field],
             };
-            setShowButtons(Object.values(updatedState).some((value) => value)); // Show buttons if any field is being edited
+            setShowButtons(Object.values(updatedState).some((value) => value));
             return updatedState;
         });
     };
@@ -109,7 +109,7 @@ const Profile = () => {
             email: user?.email || "",
             profile_picture: user?.profile_picture || "",
         });
-        setShowButtons(false); // Hide buttons when canceling
+        setShowButtons(false);
     };
 
     const handleToggleShopForm = () => {
