@@ -30,10 +30,10 @@ const Home = () => {
                         <img
                             alt="User pic or BarbApp logo"
                             src={changeImageSize(userPic) || logo}
-                            className="mt-4 w-full"
+                            className="mt-4"
                             referrerPolicy="no-referrer"
                         />
-                        <h1 className="text-4xl width-fixed p-5 font-bold mt-4 bg-gradient-to-r from-slate-900 to-yellow-300 bg-clip-text text-transparent">
+                        <h1 className="text-4xl text-center p-5 font-bold mt-4 bg-gradient-to-r from-slate-900 to-yellow-300 bg-clip-text text-transparent">
                             Welcome to BARBAPP! {firstName || userName}{" "}
                         </h1>
                         <div className="flex flex-col items-center justify-center">
@@ -47,7 +47,7 @@ const Home = () => {
                     </div>
                 </div>
             )}
-            <div className="container mx-auto p-4 ">
+            <div className="container mx-auto">
                 <Carousel
                     autoSlide={true}
                     autoSlideInterval={5000}

@@ -3,9 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Async thunk to fetch all shops
 export const fetchShops = createAsyncThunk("shop/fetchShops", async () => {
-    const response = await fetch(
-        "https://dummyjson.com/products/category/beauty"
-    );
+    const response = await fetch("https://dummyjson.com/products/");
     const data = await response.json();
     return data.products;
 });
