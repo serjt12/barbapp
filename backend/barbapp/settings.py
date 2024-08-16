@@ -12,13 +12,18 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 env = environ.Env()
 environ.Env.read_env()
 from corsheaders.defaults import default_headers
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -56,7 +61,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
     'corsheaders',
-    'salon',
+    'shops',
     'users',
     'barbapp'
 ]
@@ -70,7 +75,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-AUTH_USER_MODEL = 'salon.User'
+AUTH_USER_MODEL = 'shops.User'
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -90,6 +95,7 @@ LOGGING = {
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
         },
         'file': {
             'class': 'logging.FileHandler',
@@ -101,6 +107,7 @@ LOGGING = {
         'handlers': ['console', 'file'],
         'level': 'DEBUG',
     },
+    
 }
 
 # Add the URL where users are redirected to after login (optional)
@@ -202,7 +209,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 # For allowing all origins (use with caution, mainly for development)
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_METHODS = [
     "GET",
@@ -216,6 +223,10 @@ CORS_ALLOW_METHODS = [
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'X-CSRFToken',
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_BASE_DIR = Path(__file__).resolve().parent
+MEDIA_ROOT = os.path.join(MEDIA_BASE_DIR, 'media')
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

@@ -13,6 +13,7 @@ const ShopDetail = () => {
 
     // Selectors to get shop data, status, and error from the Redux store
     const shop = useSelector((state) => state.shop.selectedShop);
+    console.log("shop: ", shop);
     const status = useSelector((state) => state.shop.status);
     const error = useSelector((state) => state.shop.error);
 
@@ -38,10 +39,10 @@ const ShopDetail = () => {
     return (
         <div className="container mx-auto p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="col-span-1 md:col-span-2">
-                <ShopImage src={shop?.images[0]} alt={shop?.description} />
+                <ShopImage src={shop?.image} alt={shop?.description} />
             </div>
             <div className="col-span-1 md:col-span-2">
-                <ShopInfo title={shop?.title} description={shop?.description} />
+                <ShopInfo title={shop?.name} description={shop?.contact_info} />
             </div>
             <div className="col-span-1 md:col-span-2">
                 <Reviews reviews={shop?.reviews} />

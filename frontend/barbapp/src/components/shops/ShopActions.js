@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
+import { getImageUrl } from "../../services/utils";
 
 const BookingOrProducts = ({ shopType, shopImages }) => {
-    console.log("shopImages: ", shopImages);
     return (
         <div className="mt-8">
-            {shopType === "beauty" || shopType === "independent" ? (
+            {shopType === "beauty_shop" || shopType === "independent" ? (
                 <div>
                     <h2 className="text-2xl font-semibold">
                         Book an Appointment
@@ -13,7 +13,7 @@ const BookingOrProducts = ({ shopType, shopImages }) => {
                         {shopImages?.slice(0, 3).map((thumbnail, index) => (
                             <img
                                 key={index}
-                                src={thumbnail}
+                                src={getImageUrl(thumbnail)}
                                 alt={`Thumbnail ${index + 1}`}
                                 className="w-20 h-20 object-cover rounded"
                             />

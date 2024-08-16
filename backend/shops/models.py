@@ -11,7 +11,7 @@ class Role(models.Model):
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=120)
-    profile_picture = models.URLField(max_length=200, blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_user_images', null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, related_name='users')
     groups = models.ManyToManyField(
         Group,
@@ -38,10 +38,18 @@ class Profile(models.Model):
         return self.user.full_name
 
 class Shop(models.Model):
+    SHOP_TYPE_CHOICES = [
+        ('independent', 'Independent'),
+        ('beauty_shop', 'Beauty Shop'),
+        ('beauty_supplier', 'Beauty Supplier'),
+    ]
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_shops', null=False)
     name = models.CharField(max_length=120)
     location = models.CharField(max_length=200)
+    type = models.CharField(max_length=20, choices=SHOP_TYPE_CHOICES, default='independent')
     contact_info = models.CharField(max_length=200, blank=True)
+    opening_hours = models.CharField(max_length=60, blank=True)
+    image = models.ImageField(upload_to='shop_images', null=True, blank=True)
     
     def __str__(self):
         return self.name

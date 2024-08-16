@@ -1,34 +1,56 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../services/axiosConfig";
-// import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import ImageUploader from "./ImageUploader";
 
 const ShopForm = () => {
-    // const user = useSelector((state) => state.auth.user);
     const [formData, setFormData] = useState({
         name: "",
         location: "",
         contact_info: "",
+        image: null,
+        opening_hours: "",
+        type: "", // Add type to formData
     });
     const [error, setError] = useState("");
     const [isEmpty, setIsEmpty] = useState(true);
+    const navigate = useNavigate();
 
-    const { name, location, contact_info } = formData;
+    const { name, location, contact_info, image, opening_hours, type } =
+        formData; // Destructure type
 
     const onChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value, type, files } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === "file" ? files[0] : value,
+        });
     };
 
     useEffect(() => {
-        setIsEmpty(!(name && location && contact_info));
-    }, [name, location, contact_info]);
+        setIsEmpty(!(name && location && contact_info && type)); // Include type in validation
+    }, [name, location, contact_info, type]);
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        if (name && location && contact_info) {
+        if (name && location && contact_info && type) {
+            // Ensure type is included
+            const data = new FormData();
+            data.append("name", name);
+            data.append("location", location);
+            data.append("contact_info", contact_info);
+            data.append("opening_hours", opening_hours);
+            data.append("type", type); // Add type to FormData
+            if (image) data.append("image", image);
+
             try {
-                const res = await axiosInstance.post("/shops/", formData);
+                const res = await axiosInstance.post("/shops/", data, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
                 console.log("Shop created:", res.data);
-                console.log("Shop data saved!");
+                navigate("/feed");
             } catch (err) {
                 console.error(err.response?.data || "An error occurred");
                 setError(err.response?.data?.detail || "An error occurred");
@@ -80,6 +102,43 @@ const ShopForm = () => {
                     />
                     {error && <p className="text-red-500">{error}</p>}
                 </div>
+                <div className="mb-4">
+                    <label
+                        htmlFor="opening_hours"
+                        className="block text-gray-700"
+                    >
+                        Opening Hours
+                    </label>
+                    <input
+                        type="text"
+                        name="opening_hours"
+                        value={opening_hours}
+                        onChange={onChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="type" className="block text-gray-700">
+                        Shop Type
+                    </label>
+                    <select
+                        name="type"
+                        value={type}
+                        onChange={onChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                    >
+                        <option value="">Select Shop Type</option>
+                        <option value="independent">Independent</option>
+                        <option value="beauty_shop">Beauty Shop</option>
+                        <option value="beauty_supplier">Beauty Supplier</option>
+                    </select>
+                </div>
+                <ImageUploader
+                    label="Shop Image"
+                    name="image"
+                    value={image}
+                    onChange={onChange}
+                />
                 <button
                     type="submit"
                     className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:bg-gray-700"
