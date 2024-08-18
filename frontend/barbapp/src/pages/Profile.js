@@ -24,7 +24,6 @@ AddIcons.propTypes = {
 
 const Profile = () => {
     const user = useSelector((state) => state.auth.user);
-    console.log("user: ", user);
     const [isEditing, setIsEditing] = useState({
         first_name: false,
         last_name: false,

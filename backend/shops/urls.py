@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserListCreate, ProfileListCreate, EmployeeListCreate, ServiceListCreate, AppointmentListCreate, ReviewListCreate, RoleListCreate, ShopView, ServiceView, OwnedShopListView
+from .views import UserListCreate, ProfileListCreate, EmployeeListCreate, ServiceListCreate, DailyAppointmentsView, ReviewListCreate, RoleListCreate, ShopView, ServiceView, OwnedShopListView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -13,7 +13,7 @@ urlpatterns = [
     path('employees/', EmployeeListCreate.as_view(), name='employee-list-create'),
     path('services/', ServiceListCreate.as_view(), name='service-list-create'),
     path('services/<int:pk>/', ServiceView.as_view(), name='service-detail'),
-    path('appointments/', AppointmentListCreate.as_view(), name='appointment-list-create'),
+    path('appointments/daily/', DailyAppointmentsView.as_view(), name='daily-appointments'),
     path('reviews/', ReviewListCreate.as_view(), name='review-list-create'),
 ]
 

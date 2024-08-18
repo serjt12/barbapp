@@ -7,7 +7,7 @@ import {
     selectShopError,
 } from "../../features/shops/shopsSelectors";
 import { Link } from "react-router-dom";
-import { getImageUrl } from "../../services/utils";
+import { getImageUrl, formatOpeningHours } from "../../services/utils";
 
 const OwnedShopsPage = () => {
     const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const OwnedShopsPage = () => {
                                 {shop.name}
                             </h3>
                             <p className="mt-1 text-lg font-medium text-gray-900">
-                                {shop.opening_hours}
+                                {formatOpeningHours(shop.opening_hours)}
                             </p>
                         </Link>
                     ))}

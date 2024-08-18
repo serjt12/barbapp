@@ -48,11 +48,20 @@ class Shop(models.Model):
     location = models.CharField(max_length=200)
     type = models.CharField(max_length=20, choices=SHOP_TYPE_CHOICES, default='independent')
     contact_info = models.CharField(max_length=200, blank=True)
-    opening_hours = models.CharField(max_length=60, blank=True)
+    opening_hours = models.JSONField(default=dict)  # Example: {'Monday': '09:00-17:00', 'Tuesday': '09:00-17:00'}
     image = models.ImageField(upload_to='shop_images', null=True, blank=True)
     
     def __str__(self):
         return self.name
+    
+class ShopClosure(models.Model):
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='closures')
+    date = models.DateField()
+    reason = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return f"Closure on {self.date} for {self.shop.name}"
+
 
 class Service(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='services', default=1)

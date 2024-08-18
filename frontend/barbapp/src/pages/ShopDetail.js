@@ -13,7 +13,6 @@ const ShopDetail = () => {
 
     // Selectors to get shop data, status, and error from the Redux store
     const shop = useSelector((state) => state.shop.selectedShop);
-    console.log("shop: ", shop);
     const status = useSelector((state) => state.shop.status);
     const error = useSelector((state) => state.shop.error);
 
@@ -51,6 +50,7 @@ const ShopDetail = () => {
                 <BookingOrProducts
                     shopType={shop?.type}
                     shopImages={shop?.images}
+                    shopId={shop?.id}
                 />
             </div>
         </div>

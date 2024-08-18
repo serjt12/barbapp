@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../services/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import ImageUploader from "./ImageUploader";
+import OpeningHoursForm from "./shops/OpeningHoursForm";
 
 const ShopForm = () => {
     const [formData, setFormData] = useState({
@@ -9,15 +10,23 @@ const ShopForm = () => {
         location: "",
         contact_info: "",
         image: null,
-        opening_hours: "",
-        type: "", // Add type to formData
+        opening_hours: {},
+        type: "",
     });
+
+    const [openingHours, setOpeningHours] = useState({
+        Monday: { open: "", close: "" },
+        Tuesday: { open: "", close: "" },
+        Wednesday: { open: "", close: "" },
+        Thursday: { open: "", close: "" },
+        Friday: { open: "", close: "" },
+        Saturday: { open: "", close: "" },
+        Sunday: { open: "", close: "" },
+    });
+
     const [error, setError] = useState("");
     const [isEmpty, setIsEmpty] = useState(true);
     const navigate = useNavigate();
-
-    const { name, location, contact_info, image, opening_hours, type } =
-        formData; // Destructure type
 
     const onChange = (e) => {
         const { name, value, type, files } = e.target;
@@ -27,21 +36,29 @@ const ShopForm = () => {
         });
     };
 
+    // Check if all required fields are filled out
     useEffect(() => {
-        setIsEmpty(!(name && location && contact_info && type)); // Include type in validation
-    }, [name, location, contact_info, type]);
+        const checkIsEmpty = () => {
+            const { name, location, contact_info, type } = formData;
+            if (name && location && contact_info && type) {
+                setIsEmpty(false);
+            } else {
+                setIsEmpty(true);
+            }
+        };
+        checkIsEmpty();
+    }, [formData]);
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        if (name && location && contact_info && type) {
-            // Ensure type is included
+        if (!isEmpty) {
             const data = new FormData();
-            data.append("name", name);
-            data.append("location", location);
-            data.append("contact_info", contact_info);
-            data.append("opening_hours", opening_hours);
-            data.append("type", type); // Add type to FormData
-            if (image) data.append("image", image);
+            data.append("name", formData.name);
+            data.append("location", formData.location);
+            data.append("contact_info", formData.contact_info);
+            data.append("opening_hours", JSON.stringify(openingHours));
+            data.append("type", formData.type);
+            if (formData.image) data.append("image", formData.image);
 
             try {
                 const res = await axiosInstance.post("/shops/", data, {
@@ -69,7 +86,7 @@ const ShopForm = () => {
                     <input
                         type="text"
                         name="name"
-                        value={name}
+                        value={formData.name}
                         onChange={onChange}
                         className="w-full p-2 border border-gray-300 rounded"
                     />
@@ -81,7 +98,7 @@ const ShopForm = () => {
                     <input
                         type="text"
                         name="location"
-                        value={location}
+                        value={formData.location}
                         onChange={onChange}
                         className="w-full p-2 border border-gray-300 rounded"
                     />
@@ -96,34 +113,19 @@ const ShopForm = () => {
                     <input
                         type="text"
                         name="contact_info"
-                        value={contact_info}
-                        onChange={onChange}
-                        className="w-full p-2 border border-gray-300 rounded"
-                    />
-                    {error && <p className="text-red-500">{error}</p>}
-                </div>
-                <div className="mb-4">
-                    <label
-                        htmlFor="opening_hours"
-                        className="block text-gray-700"
-                    >
-                        Opening Hours
-                    </label>
-                    <input
-                        type="text"
-                        name="opening_hours"
-                        value={opening_hours}
+                        value={formData.contact_info}
                         onChange={onChange}
                         className="w-full p-2 border border-gray-300 rounded"
                     />
                 </div>
+
                 <div className="mb-4">
                     <label htmlFor="type" className="block text-gray-700">
                         Shop Type
                     </label>
                     <select
                         name="type"
-                        value={type}
+                        value={formData.type}
                         onChange={onChange}
                         className="w-full p-2 border border-gray-300 rounded"
                     >
@@ -136,9 +138,14 @@ const ShopForm = () => {
                 <ImageUploader
                     label="Shop Image"
                     name="image"
-                    value={image}
+                    value={formData.image}
                     onChange={onChange}
                 />
+                <OpeningHoursForm
+                    openingHours={openingHours}
+                    setOpeningHours={setOpeningHours}
+                />
+                {error && <div className="text-red-500 mb-4">{error}</div>}
                 <button
                     type="submit"
                     className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:bg-gray-700"

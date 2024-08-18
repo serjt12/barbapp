@@ -6,11 +6,14 @@ const ImageUploader = ({ label, name, value, onChange }) => {
 
     useEffect(() => {
         if (value) {
-            setImageUrl(URL.createObjectURL(value));
+            const url = URL.createObjectURL(value);
+            setImageUrl(url);
+            return () => {
+                URL.revokeObjectURL(url);
+            };
+        } else {
+            setImageUrl("");
         }
-        return () => {
-            if (imageUrl) URL.revokeObjectURL(imageUrl);
-        };
     }, [value]);
 
     return (

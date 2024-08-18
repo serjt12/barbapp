@@ -2,12 +2,11 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchShops } from "../features/shops/shopsSlice";
 import { Link } from "react-router-dom";
-import { getImageUrl } from "../services/utils";
+import { getImageUrl, formatOpeningHours } from "../services/utils";
 
 const Feed = () => {
     const dispatch = useDispatch();
     const shops = useSelector((state) => state.shop?.shops);
-    console.log("shops: ", shops);
     const status = useSelector((state) => state.shop?.status);
     const error = useSelector((state) => state.shop?.error);
 
@@ -49,7 +48,7 @@ const Feed = () => {
                                 {shop.name}
                             </h3>
                             <p className="mt-1 text-lg font-medium text-gray-900">
-                                {shop.opening_hours}
+                                {formatOpeningHours(shop.opening_hours)}
                             </p>
                         </Link>
                     ))}

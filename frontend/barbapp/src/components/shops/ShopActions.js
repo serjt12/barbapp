@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../../services/utils";
 
-const BookingOrProducts = ({ shopType, shopImages }) => {
+const BookingOrProducts = ({ shopType, shopImages, shopId }) => {
     return (
         <div className="mt-8">
             {shopType === "beauty_shop" || shopType === "independent" ? (
@@ -19,9 +19,12 @@ const BookingOrProducts = ({ shopType, shopImages }) => {
                             />
                         ))}
                     </div>
-                    <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
-                        Book Now
-                    </button>
+                    <Link
+                        to="bookings"
+                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded inline-block"
+                    >
+                        Book now!
+                    </Link>
                 </div>
             ) : (
                 <div>

@@ -507,3 +507,61 @@ Unhandled Exception: name 'settings' is not defined
 Internal Server Error: /api/shops/
 Unhandled Exception: The joined path (C:\fakepath\cc.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
 Internal Server Error: /api/media/C:/fakepath/cc.jpg
+Unhandled Exception: relation "shops_shopclosure" does not exist
+LINE 1: ...losure"."date", "shops_shopclosure"."reason" FROM "shops_sho...
+                                                             ^
+
+Internal Server Error: /api/shops/
+Unhandled Exception: relation "shops_shopclosure" does not exist
+LINE 1: ...losure"."date", "shops_shopclosure"."reason" FROM "shops_sho...
+                                                             ^
+
+Internal Server Error: /api/shops/
+Unhandled Exception: relation "shops_shopclosure" does not exist
+LINE 1: ...losure"."date", "shops_shopclosure"."reason" FROM "shops_sho...
+                                                             ^
+
+Internal Server Error: /api/shops/
+Unhandled Exception: relation "shops_shopclosure" does not exist
+LINE 1: ...losure"."date", "shops_shopclosure"."reason" FROM "shops_sho...
+                                                             ^
+
+Internal Server Error: /api/shops/
+Token validation error: Token used too early, 1723905707 < 1723905708. Check that your computer's clock is set correctly.
+Unhandled Exception: name 'is_naive' is not defined
+Internal Server Error: /api/appointments/daily/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: Field 'id' expected a number but got 'undefined'.
+Internal Server Error: /api/appointments/daily/
+Token validation error: Token used too early, 1723935358 < 1723935359. Check that your computer's clock is set correctly.
+Token validation error: Token used too early, 1723935371 < 1723935372. Check that your computer's clock is set correctly.
+Unhandled Exception: connection to server at "localhost" (::1), port 5432 failed: could not fork new process for connection: Bad file descriptor
+
+Internal Server Error: /api/shops/22/

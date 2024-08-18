@@ -4,7 +4,7 @@ import axiosInstance from "../../services/axiosConfig";
 // Async thunk to fetch all shops
 export const fetchShops = createAsyncThunk("shop/fetchShops", async () => {
     const response = await axiosInstance.get("/shops");
-    return response.data.shops; // Assuming response has a 'shops' key
+    return response.data.shops;
 });
 
 // Async thunk to fetch a single shop's details
@@ -12,8 +12,7 @@ export const fetchShopDetails = createAsyncThunk(
     "shop/fetchShopDetails",
     async (shopId) => {
         const response = await axiosInstance.get(`/shops/${shopId}`);
-        console.log("response1: ", response);
-        return response.data.shop; // Assuming response has a 'shop' key
+        return response.data.shop;
     }
 );
 
@@ -22,8 +21,8 @@ export const fetchOwnedShops = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.get("/owned-shops");
-            console.log("response2: ", response);
-            return response.data;
+            console.log("response: ", response);
+            return response.data.owned_shops;
         } catch (error) {
             return rejectWithValue(error.response.data);
         }

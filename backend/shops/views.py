@@ -2,8 +2,10 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import User, Profile, Shop, Employee, Service, Appointment, Review, Role
-from .serializers import UserSerializer, ProfileSerializer, ShopSerializer, EmployeeSerializer, ServiceSerializer, AppointmentSerializer, ReviewSerializer, RoleSerializer
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware, is_naive
+from .models import User, Profile, Shop, Employee, Service, Appointment, Review, Role, ShopClosure
+from .serializers import UserSerializer, ProfileSerializer, ShopSerializer, EmployeeSerializer, ServiceSerializer, AppointmentSerializer, ReviewSerializer, RoleSerializer, ShopClosureSerializer
 import logging
 
 logger = logging.getLogger(__name__)
@@ -85,11 +87,15 @@ class ShopView(APIView):
 
     def get(self, request, pk=None):
         if pk:
-            # Get a single shop instance
             try:
                 shop = Shop.objects.get(pk=pk)
-                serializer = ShopSerializer(shop)
-                return Response({"shop": serializer.data})
+                closures = ShopClosure.objects.filter(shop=shop)
+                shop_serializer = ShopSerializer(shop)
+                closures_serializer = ShopClosureSerializer(closures, many=True)
+                return Response({
+                    "shop": shop_serializer.data,
+                    "closures": closures_serializer.data
+                })
             except Shop.DoesNotExist:
                 return Response({'error': 'Shop not found'}, status=status.HTTP_404_NOT_FOUND)
         else:
@@ -128,6 +134,8 @@ class ShopView(APIView):
         shop.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+from rest_framework.response import Response
+
 class OwnedShopListView(generics.ListAPIView):
     serializer_class = ShopSerializer
     permission_classes = [IsAuthenticated]
@@ -135,6 +143,21 @@ class OwnedShopListView(generics.ListAPIView):
     def get_queryset(self):
         # Filter shops where the owner is the logged-in user
         return Shop.objects.filter(owner=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({"owned_shops": serializer.data})
+
+    
+class ShopClosureView(generics.ListCreateAPIView):
+    queryset = ShopClosure.objects.all()
+    serializer_class = ShopClosureSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save()
+
 
 class ServiceView(APIView):
     permission_classes = [IsAuthenticated]
@@ -171,3 +194,33 @@ class ServiceView(APIView):
 
         service.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class DailyAppointmentsView(generics.GenericAPIView):
+    serializer_class = AppointmentSerializer
+
+    def get(self, request, *args, **kwargs):
+        date_str = request.query_params.get('date')
+        shop_id = request.query_params.get('shop_id')
+        
+        if not date_str:
+            return Response({'error': 'Date parameter is required'}, status=400)
+        if not shop_id:
+            return Response({'error': 'Shop ID parameter is required'}, status=400)
+        
+        try:
+            date = parse_datetime(date_str)
+            if date is None:
+                raise ValueError
+            if is_naive(date):
+                date = make_aware(date)
+        except ValueError:
+            return Response({'error': 'Invalid date format'}, status=400)
+        
+        try:
+            shop = Shop.objects.get(pk=shop_id)
+        except Shop.DoesNotExist:
+            return Response({'error': 'Shop not found'}, status=404)
+        
+        appointments = Appointment.objects.filter(datetime__date=date.date(), service__shop=shop)
+        serializer = self.get_serializer(appointments, many=True)
+        return Response(serializer.data)
