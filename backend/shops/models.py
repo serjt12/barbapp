@@ -53,18 +53,8 @@ class Shop(models.Model):
     
     def __str__(self):
         return self.name
-    
-class ShopClosure(models.Model):
-    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='closures')
-    date = models.DateField()
-    reason = models.CharField(max_length=255, blank=True)
-
-    def __str__(self):
-        return f"Closure on {self.date} for {self.shop.name}"
-
-
 class Service(models.Model):
-    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='services', default=1)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='services')
     name = models.CharField(max_length=120)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
@@ -72,16 +62,17 @@ class Service(models.Model):
         return f"{self.name} - {self.shop.name}"
 
 class Appointment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appointments')
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='appointments')
     datetime = models.DateTimeField()
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    service = models.ForeignKey('Service', on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Appointment for {self.user.full_name} at {self.datetime}"
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='reviews', default=1)  # Add default value
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='reviews')  # Add default value
     rating = models.IntegerField()
     comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

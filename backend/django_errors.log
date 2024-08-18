@@ -565,3 +565,36 @@ Token validation error: Token used too early, 1723935371 < 1723935372. Check tha
 Unhandled Exception: connection to server at "localhost" (::1), port 5432 failed: could not fork new process for connection: Bad file descriptor
 
 Internal Server Error: /api/shops/22/
+Unhandled Exception: Field 'id' expected a number but got ''.
+Internal Server Error: /api/appointments/create/
+Unhandled Exception: name 'parse_date' is not defined
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: name 'parse_date' is not defined
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: name 'parse_date' is not defined
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: name 'parse_date' is not defined
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: Cannot resolve keyword 'shop_id' into field. Choices are: datetime, id, service, service_id, user, user_id
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: Cannot resolve keyword 'shop_id' into field. Choices are: datetime, id, service, service_id, user, user_id
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: Cannot resolve keyword 'shop_id' into field. Choices are: datetime, id, service, service_id, user, user_id
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: null value in column "shop_id" of relation "shops_appointment" violates not-null constraint
+DETAIL:  Failing row contains (2, 2024-08-22 15:42:00+00, 1, 1, null).
+
+Internal Server Error: /api/appointments/create/
+Unhandled Exception: null value in column "shop_id" of relation "shops_appointment" violates not-null constraint
+DETAIL:  Failing row contains (3, 2024-08-22 15:43:00+00, 1, 1, null).
+
+Internal Server Error: /api/appointments/create/
+Unhandled Exception: null value in column "shop_id" of relation "shops_appointment" violates not-null constraint
+DETAIL:  Failing row contains (4, 2024-08-22 15:43:00+00, 1, 1, null).
+
+Internal Server Error: /api/appointments/create/
+Unhandled Exception: Field 'id' expected a number but got <Shop: sdasdas>.
+Internal Server Error: /api/appointments/create/
+Unhandled Exception: 'Shop' object has no attribute 'shop_id'
+Internal Server Error: /api/appointments/create/
+Token validation error: Token used too early, 1724001771 < 1724001772. Check that your computer's clock is set correctly.

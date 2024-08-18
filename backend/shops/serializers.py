@@ -1,6 +1,6 @@
 from django.conf import settings
 from rest_framework import serializers
-from .models import User, Profile, Shop, Employee, Service, Appointment, Review, Role, ShopClosure
+from .models import User, Profile, Shop, Employee, Service, Appointment, Review, Role
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,14 +22,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['user', 'bio', 'address', 'phone']
 
-class ShopClosureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ShopClosure
-        fields = ['id', 'shop', 'date', 'reason']
 class ShopSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
     image = serializers.ImageField(required=False, use_url=False)
-    closures = ShopClosureSerializer(many=True, read_only=True)
 
     class Meta:
         model = Shop
@@ -84,9 +79,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         shop = data['service'].shop
-        shop_closures = ShopClosure.objects.filter(shop=shop, date=data['datetime'].date())
-        if shop_closures.exists():
-            raise serializers.ValidationError('Shop is closed on this date.')
 
         # Check if the appointment falls within the shop's operating hours
         opening_hours = shop.opening_hours

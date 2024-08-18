@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserListCreate, ProfileListCreate, EmployeeListCreate, ServiceListCreate, DailyAppointmentsView, ReviewListCreate, RoleListCreate, ShopView, ServiceView, OwnedShopListView
+from .views import UserListCreate, ProfileListCreate, EmployeeListCreate, DailyAppointmentsView, ReviewListCreate, RoleListCreate, ShopView, ServiceView, OwnedShopListView, CreateAppointmentView, MonthlyAppointmentsView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -11,10 +11,12 @@ urlpatterns = [
     path('shops/', ShopView.as_view(), name='shop-list-create'),
     path('shops/<int:pk>/', ShopView.as_view(), name='shop-detail'),
     path('employees/', EmployeeListCreate.as_view(), name='employee-list-create'),
-    path('services/', ServiceListCreate.as_view(), name='service-list-create'),
+    path('services/', ServiceView.as_view(), name='service-list-create'),
     path('services/<int:pk>/', ServiceView.as_view(), name='service-detail'),
     path('appointments/daily/', DailyAppointmentsView.as_view(), name='daily-appointments'),
+    path('appointments/monthly/', MonthlyAppointmentsView.as_view(), name='daily-appointments'),
     path('reviews/', ReviewListCreate.as_view(), name='review-list-create'),
+    path('appointments/create/', CreateAppointmentView.as_view(), name='create-appointment'),
 ]
 
 if settings.DEBUG:

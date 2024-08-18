@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
 const OpeningHoursForm = ({ openingHours, setOpeningHours }) => {
-    console.log("openingHours: ", openingHours);
     const [dayTime, setDayTime] = useState({ day: "", open: "", close: "" });
 
     const handleAddDayTime = () => {

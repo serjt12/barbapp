@@ -12,7 +12,6 @@ import { getImageUrl, formatOpeningHours } from "../../services/utils";
 const OwnedShopsPage = () => {
     const dispatch = useDispatch();
     const ownedShops = useSelector(selectOwnedShops);
-    console.log("ownedShops: ", ownedShops);
     const isLoading = useSelector(selectShopLoading);
     const error = useSelector(selectShopError);
 

@@ -1,32 +1,34 @@
+// BookingCalendar.js
 import React from "react";
 import Calendar from "react-awesome-calendar";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import AppointmentForm from "./AppointmentForm";
 
 const BookingCalendar = ({
     onChange,
     selectedDate,
-    dailyAppointments = [],
     events = [],
-    onClickEvent,
+    services,
+    appointments,
 }) => {
-    console.log("selectedDate: ", selectedDate);
+    // Filter appointments based on the selected date
+    let filteredAppointments = appointments.filter((appointment) => {
+        const appointmentDate = new Date(appointment.datetime).toDateString();
+        const selectedDateString = new Date(selectedDate).toDateString();
+        return appointmentDate === selectedDateString;
+    });
 
-    const header = ({ prev, current, next, mode }) => {
-        console.log(
-            "prev: ",
-            prev,
-            "current: ",
-            current,
-            "next: ",
-            next,
-            "mode: ",
-            mode
-        );
-
+    const header = ({ prev, current, next }) => {
         return (
             <div className="flex justify-between items-center p-4 bg-gradient-to-r from-slate-900 to-yellow-300 rounded-t-lg">
                 <button
-                    onClick={() => console.log("Prev day:", prev)}
+                    onClick={() =>
+                        onChange({
+                            year: current.year,
+                            month: current.month - 1,
+                            day: current.day,
+                        })
+                    }
                     className="text-white hover:text-yellow-300 transition duration-300"
                 >
                     <FaChevronLeft />
@@ -34,12 +36,18 @@ const BookingCalendar = ({
                 <h2 className="text-xl font-bold text-white">
                     {new Date(
                         current.year,
-                        current.month - 1,
+                        current.month,
                         current.day
                     ).toDateString()}
                 </h2>
                 <button
-                    onClick={() => console.log("Next day:", next)}
+                    onClick={() =>
+                        onChange({
+                            year: current.year,
+                            month: current.month + 1,
+                            day: current.day,
+                        })
+                    }
                     className="text-white hover:text-yellow-300 transition duration-300"
                 >
                     <FaChevronRight />
@@ -51,12 +59,8 @@ const BookingCalendar = ({
     return (
         <div className="container mx-auto mt-8">
             <div className="bg-white shadow rounded">
-                <Calendar
-                    header={header}
-                    events={events}
-                    onChange={onChange}
-                    onClickEvent={onClickEvent}
-                />
+                <Calendar header={header} events={events} onChange={onChange} />
+                <AppointmentForm services={services} />
                 {selectedDate && (
                     <div className="p-6 bg-gradient-to-r from-slate-900 to-yellow-300 text-white rounded-b-lg">
                         <h2 className="text-2xl font-bold">
@@ -64,11 +68,10 @@ const BookingCalendar = ({
                             {new Date(selectedDate).toDateString()}
                         </h2>
                         <ul className="mt-4">
-                            {dailyAppointments.length > 0 ? (
-                                dailyAppointments.map((appointment) => (
+                            {filteredAppointments.length > 0 ? (
+                                filteredAppointments.map((appointment) => (
                                     <li key={appointment.id} className="mt-2">
-                                        {appointment.user.full_name} -{" "}
-                                        {appointment.service.name} at{" "}
+                                        {appointment.service.name} -{" "}
                                         {new Date(
                                             appointment.datetime
                                         ).toLocaleTimeString()}

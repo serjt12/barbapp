@@ -26,3 +26,12 @@
         transform: rotate(360deg);
     }
 }
+
+/* styles.css */
+#dayCell {
+    /* default styling */
+}
+
+#dayCell .inactiveDay {
+    opacity: 0.5;
+}
