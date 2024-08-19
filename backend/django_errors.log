@@ -598,3 +598,5 @@ Internal Server Error: /api/appointments/create/
 Unhandled Exception: 'Shop' object has no attribute 'shop_id'
 Internal Server Error: /api/appointments/create/
 Token validation error: Token used too early, 1724001771 < 1724001772. Check that your computer's clock is set correctly.
+Unhandled Exception: Field 'id' expected a number but got ''.
+Internal Server Error: /api/appointments/create/
