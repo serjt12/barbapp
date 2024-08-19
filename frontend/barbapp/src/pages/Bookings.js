@@ -14,7 +14,8 @@ import BookingCalendar from "../components/appointment/BookingCalendar";
 const Bookings = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [selectedDate, setSelectedDate] = useState(new Date()); // Initialize with current date
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [highlightedEvents, setHighlightedEvents] = useState([]);
 
     const shop = useSelector((state) => state.shop.selectedShop);
     const status = useSelector((state) => state.shop.status);
@@ -41,6 +42,40 @@ const Bookings = () => {
         setSelectedDate(calendarDate);
     };
 
+    const handleClickTimeLine = (date) => {
+        // Create the full Date object, including time
+        const localDate = new Date(
+            Date.UTC(date.year, date.month, date.day, date.hour)
+        );
+
+        // Log to check the localDate and its conversion
+        console.log("Local Date:", localDate.toISOString());
+
+        if (isNaN(localDate.getTime())) {
+            console.error("Invalid date:", localDate);
+            return;
+        }
+
+        // Update the selectedDate
+        setSelectedDate(localDate);
+
+        // Highlight event
+        const eventDuration = 60 * 60 * 1000; // 1 hour in milliseconds
+        const newEvent = {
+            id: `selected-time-${Date.now()}`,
+            color: "#FF6347", // Highlight color
+            from: localDate.toISOString(), // Start time
+            to: new Date(localDate.getTime() + eventDuration).toISOString(), // End time (1 hour later)
+            title: "Selected Time",
+        };
+
+        // Log new event for debugging
+        console.log("New Event:", newEvent);
+
+        // Replace the highlightedEvents array with the new event
+        setHighlightedEvents([newEvent]);
+    };
+
     if (status === "loading") {
         return (
             <div className="flex justify-center items-center h-64">
@@ -53,7 +88,12 @@ const Bookings = () => {
         return <div>Error: {error}</div>;
     }
 
-    const events = [...openingHourEvents, ...appointmentEvents];
+    // Combine events inside the BookingCalendar component
+    const events = [
+        ...openingHourEvents,
+        ...appointmentEvents,
+        ...highlightedEvents,
+    ];
 
     return (
         <div className="container p-12 bg-white">
@@ -63,10 +103,12 @@ const Bookings = () => {
             <p className="mt-4 text-lg">Select a date to view appointments.</p>
             <BookingCalendar
                 appointments={appointments}
-                events={events}
+                events={events} // Pass the combined events
                 onChange={handleDateChange}
                 selectedDate={selectedDate}
                 services={services}
+                onClickTimeLine={handleClickTimeLine}
+                highlightedEvents={highlightedEvents} // Ensure highlightedEvents is passed
             />
         </div>
     );

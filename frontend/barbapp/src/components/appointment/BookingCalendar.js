@@ -1,4 +1,3 @@
-// BookingCalendar.js
 import React from "react";
 import Calendar from "react-awesome-calendar";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -7,17 +6,17 @@ import AppointmentForm from "./AppointmentForm";
 const BookingCalendar = ({
     onChange,
     selectedDate,
-    events = [],
+    events,
     services,
     appointments,
+    onClickTimeLine,
 }) => {
-    // Filter appointments based on the selected date
+    console.log("events: ", events);
     let filteredAppointments = appointments.filter((appointment) => {
         const appointmentDate = new Date(appointment.datetime).toDateString();
         const selectedDateString = new Date(selectedDate).toDateString();
         return appointmentDate === selectedDateString;
     });
-
     const header = ({ prev, current, next }) => {
         return (
             <div className="flex justify-between items-center p-4 bg-gradient-to-r from-slate-900 to-yellow-300 rounded-t-lg">
@@ -59,8 +58,16 @@ const BookingCalendar = ({
     return (
         <div className="container mx-auto mt-8">
             <div className="bg-white shadow rounded">
-                <Calendar header={header} events={events} onChange={onChange} />
-                <AppointmentForm services={services} />
+                <Calendar
+                    header={header}
+                    events={events} // Use highlightedEvents here
+                    onChange={onChange}
+                    onClickTimeLine={onClickTimeLine}
+                />
+                <AppointmentForm
+                    services={services}
+                    selectedDate={selectedDate}
+                />
                 {selectedDate && (
                     <div className="p-6 bg-gradient-to-r from-slate-900 to-yellow-300 text-white rounded-b-lg">
                         <h2 className="text-2xl font-bold">
