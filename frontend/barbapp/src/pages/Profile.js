@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../services/axiosConfig";
 import { FaEdit, FaCheck, FaTimes, FaPlus, FaMinus } from "react-icons/fa";
 import ShopForm from "../components/ShopForm";
+import ImageUploader from "../components/ImageUploader";
 import PropTypes from "prop-types";
+import OwnedShopsPage from "../components/shops/OwnedShops";
+import { getImageUrl } from "../services/utils";
 
 const AddIcons = ({ onClick, showConditional }) =>
     showConditional ? (
@@ -53,22 +56,32 @@ const Profile = () => {
     };
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+        const { name, value, type, files } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: type === "file" ? files[0] : value,
+        }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const data = new FormData();
+        data.append("first_name", formData.first_name);
+        data.append("last_name", formData.last_name);
+        data.append("email", formData.email);
+        if (formData.profile_picture) {
+            data.append("profile_picture", formData.profile_picture);
+        }
+
         setErrors({});
         try {
-            const response = await axiosInstance.put(
-                "/update_profile/",
-                formData
-            );
+            const response = await axiosInstance.put("/update_profile/", data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             console.log("Profile updated:", response.data);
-            dispatch(updateUser(formData));
+            dispatch(updateUser(response.data.user));
             setShowButtons(false);
             setIsEditing({
                 first_name: false,
@@ -126,11 +139,29 @@ const Profile = () => {
             {user ? (
                 <div>
                     <div className="mb-4 flex justify-center">
-                        <img
-                            src={user.profile_picture}
-                            alt={user.username}
-                            className="rounded-full w-32 h-32"
-                        />
+                        {isEditing.profile_picture ? (
+                            <ImageUploader
+                                label="Profile Picture"
+                                name="profile_picture"
+                                image={formData.profile_picture}
+                                onChange={handleChange}
+                            />
+                        ) : (
+                            <>
+                                {" "}
+                                <img
+                                    src={getImageUrl(formData.profile_picture)}
+                                    alt={user.username}
+                                    className="rounded-full w-32 h-32"
+                                />
+                                <FaEdit
+                                    className="ml-2 cursor-pointer"
+                                    onClick={() =>
+                                        handleEdit("profile_picture")
+                                    }
+                                />
+                            </>
+                        )}
                     </div>
                     <div className="mb-4 flex justify-end">
                         <ul className=" flex space-x-4">
@@ -227,31 +258,6 @@ const Profile = () => {
                         {errors.email && (
                             <p className="text-red-500">{errors.email}</p>
                         )}
-                        <div className="mb-4 flex items-center">
-                            <label
-                                htmlFor="profile_picture"
-                                className="block text-gray-700 w-1/4"
-                            >
-                                Profile Picture URL
-                            </label>
-                            {isEditing.profile_picture ? (
-                                <input
-                                    type="text"
-                                    name="profile_picture"
-                                    value={formData.profile_picture}
-                                    onChange={handleChange}
-                                    className="mt-1 p-2 border border-gray-300 rounded w-full"
-                                />
-                            ) : (
-                                <span className="mt-1 p-2 w-full">
-                                    {formData.profile_picture}
-                                </span>
-                            )}
-                            <FaEdit
-                                className="ml-2 cursor-pointer"
-                                onClick={() => handleEdit("profile_picture")}
-                            />
-                        </div>
                         {errors.profile_picture && (
                             <p className="text-red-500">
                                 {errors.profile_picture}
@@ -289,7 +295,7 @@ const Profile = () => {
                     )}
                     {showShopsList && (
                         <div className="container mx-auto my-4 p-4 bg-white shadow rounded">
-                            List of Shops
+                            <OwnedShopsPage />
                         </div>
                     )}
                 </div>

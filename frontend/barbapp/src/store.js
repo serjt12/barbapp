@@ -14,6 +14,7 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "./features/auth/authSlice";
 import loadingReducer from "./features/loading/loadingSlice";
 import shopReducer from "./features/shops/shopsSlice";
+import appointmentsReducer from "./features/appointments/appointmentsSlice";
 import loadingMiddleware from "./features/loading/loadingMiddleware";
 
 const persistConfig = {
@@ -28,7 +29,8 @@ const store = configureStore({
     reducer: {
         auth: persistedReducer,
         loading: loadingReducer,
-        shop: shopReducer, // Add the shop reducer here
+        shop: shopReducer,
+        appointments: appointmentsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

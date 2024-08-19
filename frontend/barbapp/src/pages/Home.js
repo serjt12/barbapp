@@ -11,25 +11,20 @@ import pic3 from "../assets/carousel-pic3.jpg";
 const Home = () => {
     const userName = useSelector((state) => state.auth.user?.username);
     const firstName = useSelector((state) => state.auth.user?.first_name);
-    const userPic = useSelector((state) => state.auth.user?.picture);
     const captions = [
         "Your beauty business network - Slide 1",
         "Your beauty business network - Slide 2",
         "Your beauty business network - Slide 3",
     ];
 
-    const changeImageSize = (url, size = 512) => {
-        if (!url) return;
-        return url.replace(/s\d+-c/, `s${size}-c`);
-    };
     return (
         <>
             {(firstName || userName) && (
                 <div className="container m-3 mx-auto flex flex-col items-center justify-center bg-white shadow rounded">
-                    <div className="p-10 w-xl">
+                    <div className="p-10 w-xl flex flex-col items-center">
                         <img
                             alt="User pic or BarbApp logo"
-                            src={changeImageSize(userPic) || logo}
+                            src={logo}
                             className="mt-4"
                             referrerPolicy="no-referrer"
                         />

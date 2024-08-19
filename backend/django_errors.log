@@ -65,3 +65,536 @@ Token validation error: Token used too early, 1723558168 < 1723558169. Check tha
 Token validation error: Token used too early, 1723558517 < 1723558519. Check that your computer's clock is set correctly.
 Token validation error: Token used too early, 1723558973 < 1723558975. Check that your computer's clock is set correctly.
 Token validation error: Token used too early, 1723744427 < 1723744428. Check that your computer's clock is set correctly.
+Internal Server Error: /api/shops/
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'djdt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\middleware.py", line 97, in __call__
+    rendered = toolbar.render_toolbar()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\toolbar.py", line 84, in render_toolbar
+    return render_to_string("debug_toolbar/base.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 326, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace
+"GET /api/shops/ HTTP/1.1" 500 143318
+Internal Server Error: /api/shops/
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'djdt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\middleware.py", line 97, in __call__
+    rendered = toolbar.render_toolbar()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\toolbar.py", line 84, in render_toolbar
+    return render_to_string("debug_toolbar/base.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 326, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace
+"GET /api/shops/ HTTP/1.1" 500 143318
+Internal Server Error: /api/shops/
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'djdt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\middleware.py", line 97, in __call__
+    rendered = toolbar.render_toolbar()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\toolbar.py", line 84, in render_toolbar
+    return render_to_string("debug_toolbar/base.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 326, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace
+Internal Server Error: /api/shops/
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'djdt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\middleware.py", line 97, in __call__
+    rendered = toolbar.render_toolbar()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\toolbar.py", line 84, in render_toolbar
+    return render_to_string("debug_toolbar/base.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 326, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace
+Internal Server Error: /api/shops/
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'djdt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\middleware.py", line 97, in __call__
+    rendered = toolbar.render_toolbar()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\toolbar.py", line 84, in render_toolbar
+    return render_to_string("debug_toolbar/base.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 326, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace
+Internal Server Error: /api/shops/
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'djdt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\middleware.py", line 97, in __call__
+    rendered = toolbar.render_toolbar()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\debug_toolbar\toolbar.py", line 84, in render_toolbar
+    return render_to_string("debug_toolbar/base.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 326, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\template\defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "A:\dev\Python\barbapp\backend\.venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace
+Unhandled Exception: ShopView.get() got an unexpected keyword argument 'pk'
+Internal Server Error: /api/shops/2/
+Unhandled Exception: ShopView.get() got an unexpected keyword argument 'pk'
+Internal Server Error: /api/shops/2/
+Unhandled Exception: ShopView.get() got an unexpected keyword argument 'pk'
+Internal Server Error: /api/shops/1/
+Unhandled Exception: ShopView.get() got an unexpected keyword argument 'pk'
+Internal Server Error: /api/shops/1/
+Unhandled Exception: ShopView.get() got an unexpected keyword argument 'pk'
+Internal Server Error: /api/shops/1/
+Unhandled Exception: ShopView.get() got an unexpected keyword argument 'pk'
+Internal Server Error: /api/shops/1/
+Unhandled Exception: 'Shop' object has no attribute 'data'
+Internal Server Error: /api/shops/
+Unhandled Exception: 'Shop' object has no attribute 'data'
+Internal Server Error: /api/shops/
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\user.profile_picture}” does not exist
+Internal Server Error: /api/media/user.profile_picture}
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\user.profile_picture}” does not exist
+Internal Server Error: /api/media/shop_images/user.profile_picture}
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\user.profile_picture}” does not exist
+Internal Server Error: /api/media/shop_images/user.profile_picture}
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\user.profile_picture}” does not exist
+Internal Server Error: /api/media/shop_images/user.profile_picture}
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\user.profile_picture” does not exist
+Internal Server Error: /api/media/shop_images/user.profile_picture
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\carousel-pic4” does not exist
+Internal Server Error: /api/media/shop_images/carousel-pic4
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\shop.image” does not exist
+Internal Server Error: /api/media/shop_images/shop.image
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_1.jpg” does not exist
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_2.jpg” does not exist
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_2_rSH2yxu.jpg” does not exist
+Internal Server Error: /api/media/shop_images//media/shop_images/Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_1.jpg
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_0_JXijB7M.jpg” does not exist
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\carousel-pic4.jpg” does not exist
+Internal Server Error: /api/media/shop_images//media/shop_images/Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_2.jpg
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\carousel-pic4_obT2aBe.jpg” does not exist
+Internal Server Error: /api/media/shop_images//media/shop_images/Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_2_rSH2yxu.jpg
+Internal Server Error: /api/media/shop_images//media/shop_images/Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_0_JXijB7M.jpg
+Internal Server Error: /api/media/shop_images//media/shop_images/carousel-pic4.jpg
+Internal Server Error: /api/media/shop_images//media/shop_images/carousel-pic4_obT2aBe.jpg
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_0.jpg” does not exist
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_3.jpg” does not exist
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\IMG20240224095133.jpg” does not exist
+Internal Server Error: /api/media/shop_images//media/shop_images/Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_0.jpg
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\Problem_Tree_Template.jpg” does not exist
+Internal Server Error: /api/media/shop_images//media/shop_images/Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_3.jpg
+Internal Server Error: /api/media/shop_images//media/shop_images/IMG20240224095133.jpg
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\IMG20240224095133_zHf5Hse.jpg” does not exist
+Internal Server Error: /api/media/shop_images//media/shop_images/Problem_Tree_Template.jpg
+Internal Server Error: /api/media/shop_images//media/shop_images/IMG20240224095133_zHf5Hse.jpg
+Unhandled Exception: “A:\dev\Python\barbapp\backend\barbapp\media\shop_images\media\shop_images\Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_1.jpg” does not exist
+Internal Server Error: /api/media/shop_images//media/shop_images/Leonardo_Phoenix_Create_a_highend_photograph_of_an_upscale_bea_1.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\1805645.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/1805645.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\IMG20240224095133.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/IMG20240224095133.jpg
+Unhandled Exception: The joined path (C:\fakepath\Screenshot 2024-03-10 174607.png) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/Screenshot 2024-03-10 174607.png
+Unhandled Exception: The joined path (C:\fakepath\Screenshot 2024-03-10 174607.png) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/Screenshot 2024-03-10 174607.png
+Unhandled Exception: The joined path (C:\fakepath\Screenshot 2024-03-10 174607.png) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/Screenshot 2024-03-10 174607.png
+Unhandled Exception: The joined path (C:\fakepath\Screenshot 2024-03-10 174607.png) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/Screenshot 2024-03-10 174607.png
+Unhandled Exception: The joined path (C:\fakepath\Screenshot 2024-03-10 174607.png) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/Screenshot 2024-03-10 174607.png
+Unhandled Exception: The joined path (C:\fakepath\Screenshot 2024-03-10 174607.png) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/Screenshot 2024-03-10 174607.png
+Unhandled Exception: The joined path (C:\fakepath\Screenshot 2024-03-10 174607.png) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/Screenshot 2024-03-10 174607.png
+Unhandled Exception: The joined path (C:\fakepath\Screenshot 2024-03-10 174607.png) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/Screenshot 2024-03-10 174607.png
+Unhandled Exception: The joined path (C:\fakepath\Screenshot 2024-03-10 174607.png) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/Screenshot 2024-03-10 174607.png
+Unhandled Exception: The joined path (C:\fakepath\1805645.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/1805645.jpg
+Unhandled Exception: 'OwnedShopListView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: 'OwnedShopListView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: OwnedShopListView.get() takes 1 positional argument but 2 were given
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: OwnedShopListView.get() takes 1 positional argument but 2 were given
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: OwnedShopListView.get() takes 1 positional argument but 2 were given
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: OwnedShopListView.get() takes 1 positional argument but 2 were given
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: OwnedShopListView.get() takes 1 positional argument but 2 were given
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: OwnedShopListView.get() takes 1 positional argument but 2 were given
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: name 'settings' is not defined
+Internal Server Error: /api/shops/
+Unhandled Exception: name 'settings' is not defined
+Internal Server Error: /api/shops/
+Unhandled Exception: name 'settings' is not defined
+Internal Server Error: /api/shops/
+Unhandled Exception: name 'settings' is not defined
+Internal Server Error: /api/shops/
+Unhandled Exception: The joined path (C:\fakepath\cc.jpg) is located outside of the base path component (A:\dev\Python\barbapp\backend\barbapp\media)
+Internal Server Error: /api/media/C:/fakepath/cc.jpg
+Unhandled Exception: relation "shops_shopclosure" does not exist
+LINE 1: ...losure"."date", "shops_shopclosure"."reason" FROM "shops_sho...
+                                                             ^
+
+Internal Server Error: /api/shops/
+Unhandled Exception: relation "shops_shopclosure" does not exist
+LINE 1: ...losure"."date", "shops_shopclosure"."reason" FROM "shops_sho...
+                                                             ^
+
+Internal Server Error: /api/shops/
+Unhandled Exception: relation "shops_shopclosure" does not exist
+LINE 1: ...losure"."date", "shops_shopclosure"."reason" FROM "shops_sho...
+                                                             ^
+
+Internal Server Error: /api/shops/
+Unhandled Exception: relation "shops_shopclosure" does not exist
+LINE 1: ...losure"."date", "shops_shopclosure"."reason" FROM "shops_sho...
+                                                             ^
+
+Internal Server Error: /api/shops/
+Token validation error: Token used too early, 1723905707 < 1723905708. Check that your computer's clock is set correctly.
+Unhandled Exception: name 'is_naive' is not defined
+Internal Server Error: /api/appointments/daily/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: The response content must be rendered before it can be iterated over.
+Internal Server Error: /api/owned-shops/
+Unhandled Exception: Field 'id' expected a number but got 'undefined'.
+Internal Server Error: /api/appointments/daily/
+Token validation error: Token used too early, 1723935358 < 1723935359. Check that your computer's clock is set correctly.
+Token validation error: Token used too early, 1723935371 < 1723935372. Check that your computer's clock is set correctly.
+Unhandled Exception: connection to server at "localhost" (::1), port 5432 failed: could not fork new process for connection: Bad file descriptor
+
+Internal Server Error: /api/shops/22/
+Unhandled Exception: Field 'id' expected a number but got ''.
+Internal Server Error: /api/appointments/create/
+Unhandled Exception: name 'parse_date' is not defined
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: name 'parse_date' is not defined
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: name 'parse_date' is not defined
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: name 'parse_date' is not defined
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: Cannot resolve keyword 'shop_id' into field. Choices are: datetime, id, service, service_id, user, user_id
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: Cannot resolve keyword 'shop_id' into field. Choices are: datetime, id, service, service_id, user, user_id
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: Cannot resolve keyword 'shop_id' into field. Choices are: datetime, id, service, service_id, user, user_id
+Internal Server Error: /api/appointments/monthly/
+Unhandled Exception: null value in column "shop_id" of relation "shops_appointment" violates not-null constraint
+DETAIL:  Failing row contains (2, 2024-08-22 15:42:00+00, 1, 1, null).
+
+Internal Server Error: /api/appointments/create/
+Unhandled Exception: null value in column "shop_id" of relation "shops_appointment" violates not-null constraint
+DETAIL:  Failing row contains (3, 2024-08-22 15:43:00+00, 1, 1, null).
+
+Internal Server Error: /api/appointments/create/
+Unhandled Exception: null value in column "shop_id" of relation "shops_appointment" violates not-null constraint
+DETAIL:  Failing row contains (4, 2024-08-22 15:43:00+00, 1, 1, null).
+
+Internal Server Error: /api/appointments/create/
+Unhandled Exception: Field 'id' expected a number but got <Shop: sdasdas>.
+Internal Server Error: /api/appointments/create/
+Unhandled Exception: 'Shop' object has no attribute 'shop_id'
+Internal Server Error: /api/appointments/create/
+Token validation error: Token used too early, 1724001771 < 1724001772. Check that your computer's clock is set correctly.

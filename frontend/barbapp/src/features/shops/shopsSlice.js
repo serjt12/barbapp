@@ -1,32 +1,60 @@
-// features/shop/shopSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axiosInstance from "../../services/axiosConfig";
 
 // Async thunk to fetch all shops
 export const fetchShops = createAsyncThunk("shop/fetchShops", async () => {
-    const response = await fetch("https://dummyjson.com/products/");
-    const data = await response.json();
-    return data.products;
+    const response = await axiosInstance.get("/shops");
+    return response.data.shops;
 });
+
+export const fetchOwnedShops = createAsyncThunk(
+    "shops/fetchOwnedShops",
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get("/owned-shops");
+            return response.data.owned_shops;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 // Async thunk to fetch a single shop's details
 export const fetchShopDetails = createAsyncThunk(
     "shop/fetchShopDetails",
-    async (shopId) => {
-        const response = await fetch(
-            `https://dummyjson.com/products/${shopId}`
-        );
-        const data = await response.json();
-        return data; // Assuming the API returns the shop details directly
+    async (shopId, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get(`/shops/${shopId}`);
+            return response.data.shop;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const fetchShopServices = createAsyncThunk(
+    "shop/fetchServices",
+    async (shopId, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get(
+                `/services/?shop_id=${shopId}`
+            );
+            return response.data.services;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
     }
 );
 
 const shopSlice = createSlice({
     name: "shop",
     initialState: {
-        items: [],
+        shops: [],
         selectedShop: null,
         status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
         error: null,
+        ownedShops: [],
+        services: [],
     },
     reducers: {
         clearSelectedShop(state) {
@@ -40,7 +68,7 @@ const shopSlice = createSlice({
             })
             .addCase(fetchShops.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                state.items = action.payload;
+                state.shops = action.payload;
             })
             .addCase(fetchShops.rejected, (state, action) => {
                 state.status = "failed";
@@ -56,6 +84,28 @@ const shopSlice = createSlice({
             .addCase(fetchShopDetails.rejected, (state, action) => {
                 state.status = "failed";
                 state.error = action.error.message;
+            })
+            .addCase(fetchOwnedShops.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchOwnedShops.fulfilled, (state, action) => {
+                state.loading = false;
+                state.ownedShops = action.payload;
+            })
+            .addCase(fetchOwnedShops.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(fetchShopServices.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchShopServices.fulfilled, (state, action) => {
+                state.loading = false;
+                state.services = action.payload;
+            })
+            .addCase(fetchShopServices.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     },
 });

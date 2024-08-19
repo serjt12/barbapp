@@ -83,6 +83,8 @@ class RefreshTokenView(APIView):
                 return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'error': 'No refresh token provided'}, status=status.HTTP_400_BAD_REQUEST)
 
+from django.utils import timezone
+
 class GoogleLogin(APIView):
     permission_classes = [AllowAny]
 
@@ -118,6 +120,10 @@ class GoogleLogin(APIView):
                     'profile_picture': user_info['profile_picture'],
                 }
             )
+            if not created:
+                # Update last_login for existing users
+                user.last_login = timezone.now()
+                user.save()
         except Exception as e:
             logger.error(f"Error creating user: {e}")
             return Response({'error': 'Error creating user'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -133,6 +139,7 @@ class GoogleLogin(APIView):
             'refresh': str(refresh)
         }, status=status.HTTP_200_OK)
 
+
 class UpdateProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -147,7 +154,20 @@ class UpdateProfileView(APIView):
         user.first_name = data.get('first_name', user.first_name)
         user.last_name = data.get('last_name', user.last_name)
         user.email = new_email
-        user.profile_picture = data.get('profile_picture', user.profile_picture)
+
+        # Handle profile picture if provided
+        if 'profile_picture' in request.FILES:
+            user.profile_picture = request.FILES['profile_picture']
+        
         user.save()
 
-        return Response({'message': 'Profile updated successfully'}, status=status.HTTP_200_OK)
+        # Return the updated user data
+        user_data = {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'profile_picture': user.profile_picture.url if user.profile_picture else None,
+        }
+
+        return Response({'message': 'Profile updated successfully', 'user': user_data}, status=status.HTTP_200_OK)
+

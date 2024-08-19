@@ -2,13 +2,18 @@ import axios from "axios";
 import store from "../store";
 import { login, logout } from "../features/auth/authSlice";
 
+// Define the base URL from an environment variable
+const BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000/api";
+
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000/api",
+    baseURL: BASE_URL,
     headers: {
         "Content-Type": "application/json",
     },
 });
 
+// Request Interceptor to add Authorization header
 axiosInstance.interceptors.request.use(
     (config) => {
         const state = store.getState();
@@ -21,9 +26,10 @@ axiosInstance.interceptors.request.use(
 
         return config;
     },
-    (error) => Promise.reject(error instanceof Error ? error : new Error(error))
+    (error) => Promise.reject(error)
 );
 
+// Response Interceptor to handle errors and refresh tokens
 axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -38,11 +44,12 @@ axiosInstance.interceptors.response.use(
             if (refreshToken) {
                 try {
                     const response = await axios.post(
-                        "http://localhost:8000/api/token/refresh/",
+                        `${BASE_URL}/token/refresh/`,
                         { refresh: refreshToken }
                     );
                     const { access, refresh } = response.data;
 
+                    // Update the store and localStorage with the new tokens
                     store.dispatch(
                         login({
                             access,
@@ -50,10 +57,10 @@ axiosInstance.interceptors.response.use(
                             user: store.getState().auth.user,
                         })
                     );
-
                     localStorage.setItem("accessToken", access);
                     localStorage.setItem("refreshToken", refresh);
 
+                    // Update the Authorization header with the new access token
                     originalRequest.headers[
                         "Authorization"
                     ] = `Bearer ${access}`;
@@ -77,32 +84,31 @@ axiosInstance.interceptors.response.use(
 
         // Handle other HTTP status codes
         if (error.response) {
-            switch (error.response.status) {
+            const status = error.response.status;
+            const errorData = error.response.data;
+
+            switch (status) {
                 case 400:
-                    console.error("Bad Request: ", error.response.data);
+                    console.error("Bad Request: ", errorData);
                     break;
                 case 403:
-                    console.error("Forbidden: ", error.response.data);
+                    console.error("Forbidden: ", errorData);
                     break;
                 case 404:
-                    console.error("Not Found: ", error.response.data);
+                    console.error("Not Found: ", errorData);
                     break;
                 case 500:
-                    console.error("Server Error: ", error.response.data);
+                    console.error("Server Error: ", errorData);
                     break;
                 default:
-                    console.error("An error occurred: ", error.response.data);
+                    console.error("An error occurred: ", errorData);
                     break;
             }
         } else {
             console.error("Network Error: ", error.message);
         }
 
-        return Promise.reject(
-            error instanceof Error
-                ? error
-                : new Error(error.message || "An error occurred")
-        );
+        return Promise.reject(error);
     }
 );
 
