@@ -39,6 +39,7 @@ export const fetchShopServices = createAsyncThunk(
             const response = await axiosInstance.get(
                 `/services/?shop_id=${shopId}`
             );
+            console.log("response: ", response);
             return response.data.services;
         } catch (error) {
             return rejectWithValue(error.response.data);

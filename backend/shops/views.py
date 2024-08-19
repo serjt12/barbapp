@@ -61,7 +61,8 @@ class EmployeeListCreate(generics.ListCreateAPIView):
 class ServiceView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, shop_id=None):
+    def get(self, request):
+        shop_id = request.query_params.get('shop_id')  # Get shop_id from query parameters
         if shop_id:
             services = Service.objects.filter(shop__id=shop_id)
         else:

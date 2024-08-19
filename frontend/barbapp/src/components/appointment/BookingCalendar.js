@@ -11,12 +11,12 @@ const BookingCalendar = ({
     appointments,
     onClickTimeLine,
 }) => {
-    console.log("events: ", events);
     let filteredAppointments = appointments.filter((appointment) => {
         const appointmentDate = new Date(appointment.datetime).toDateString();
         const selectedDateString = new Date(selectedDate).toDateString();
         return appointmentDate === selectedDateString;
     });
+    console.log("filteredAppointments: ", filteredAppointments);
     const header = ({ prev, current, next }) => {
         return (
             <div className="flex justify-between items-center p-4 bg-gradient-to-r from-slate-900 to-yellow-300 rounded-t-lg">
@@ -75,18 +75,31 @@ const BookingCalendar = ({
                             {new Date(selectedDate).toDateString()}
                         </h2>
                         <ul className="mt-4">
-                            {filteredAppointments.length > 0 ? (
-                                filteredAppointments.map((appointment) => (
-                                    <li key={appointment.id} className="mt-2">
-                                        {appointment.service.name} -{" "}
-                                        {new Date(
-                                            appointment.datetime
-                                        ).toLocaleTimeString()}
-                                    </li>
+                            {
+                                (console.log("appointments", appointments),
+                                console.log(
+                                    "filteredAppointments: ",
+                                    filteredAppointments
+                                ),
+                                filteredAppointments.length > 0 ? (
+                                    filteredAppointments.map((appointment) => (
+                                        <li
+                                            key={appointment.id}
+                                            className="mt-2"
+                                        >
+                                            {appointment.service.name} -{" "}
+                                            {new Date(
+                                                appointment.datetime
+                                            ).toLocaleTimeString("en-US", {
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                            })}
+                                        </li>
+                                    ))
+                                ) : (
+                                    <li>No appointments for this day.</li>
                                 ))
-                            ) : (
-                                <li>No appointments for this day.</li>
-                            )}
+                            }
                         </ul>
                     </div>
                 )}
