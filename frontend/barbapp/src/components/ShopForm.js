@@ -76,11 +76,16 @@ const ShopForm = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl mb-4">Create Shop</h1>
-            <form onSubmit={onSubmit}>
+        <div className="container mx-auto p-4 sm:p-6 md:p-8 lg:p-10">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl mb-4 font-semibold">
+                Create Shop
+            </h1>
+            <form onSubmit={onSubmit} className="space-y-4">
                 <div className="mb-4">
-                    <label htmlFor="name" className="block text-gray-700">
+                    <label
+                        htmlFor="name"
+                        className="block text-gray-700 text-sm sm:text-base"
+                    >
                         Shop Name
                     </label>
                     <input
@@ -88,11 +93,14 @@ const ShopForm = () => {
                         name="name"
                         value={formData.name}
                         onChange={onChange}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-2 border border-gray-300 rounded text-sm sm:text-base"
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="location" className="block text-gray-700">
+                    <label
+                        htmlFor="location"
+                        className="block text-gray-700 text-sm sm:text-base"
+                    >
                         Location
                     </label>
                     <input
@@ -100,13 +108,13 @@ const ShopForm = () => {
                         name="location"
                         value={formData.location}
                         onChange={onChange}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-2 border border-gray-300 rounded text-sm sm:text-base"
                     />
                 </div>
                 <div className="mb-4">
                     <label
                         htmlFor="contact_info"
-                        className="block text-gray-700"
+                        className="block text-gray-700 text-sm sm:text-base"
                     >
                         Contact Info
                     </label>
@@ -115,19 +123,21 @@ const ShopForm = () => {
                         name="contact_info"
                         value={formData.contact_info}
                         onChange={onChange}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-2 border border-gray-300 rounded text-sm sm:text-base"
                     />
                 </div>
-
                 <div className="mb-4">
-                    <label htmlFor="type" className="block text-gray-700">
+                    <label
+                        htmlFor="type"
+                        className="block text-gray-700 text-sm sm:text-base"
+                    >
                         Shop Type
                     </label>
                     <select
                         name="type"
                         value={formData.type}
                         onChange={onChange}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-2 border border-gray-300 rounded text-sm sm:text-base"
                     >
                         <option value="">Select Shop Type</option>
                         <option value="independent">Independent</option>
@@ -145,10 +155,16 @@ const ShopForm = () => {
                     openingHours={openingHours}
                     setOpeningHours={setOpeningHours}
                 />
-                {error && <div className="text-red-500 mb-4">{error}</div>}
+                {error && (
+                    <div className="text-red-500 mb-4 text-sm sm:text-base">
+                        {error}
+                    </div>
+                )}
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:bg-gray-700"
+                    className={`w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:bg-gray-700 ${
+                        isEmpty ? "opacity-50" : ""
+                    }`}
                     disabled={isEmpty}
                 >
                     Create Shop

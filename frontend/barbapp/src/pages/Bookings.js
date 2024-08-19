@@ -43,11 +43,11 @@ const Bookings = () => {
     };
 
     const handleClickTimeLine = (date) => {
-        const utcDate = new Date(
-            Date.UTC(date.year, date.month, date.day, date.hour)
-        );
+        const localDate = new Date(date.year, date.month, date.day, date.hour);
 
-        console.log("UTC Date:", utcDate.toISOString());
+        const utcDate = new Date(
+            localDate.getTime() - localDate.getTimezoneOffset() * 60000
+        );
 
         if (isNaN(utcDate.getTime())) {
             console.error("Invalid date:", utcDate);
@@ -59,7 +59,7 @@ const Bookings = () => {
         const eventDuration = 60 * 60 * 1000;
         const newEvent = {
             id: `selected-time-${Date.now()}`,
-            color: "#FF6347",
+            color: "#ecd245",
             from: utcDate.toISOString(),
             to: new Date(utcDate.getTime() + eventDuration).toISOString(),
             title: "Selected Time",

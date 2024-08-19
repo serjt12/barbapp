@@ -40,15 +40,6 @@ class ProfileListCreate(generics.ListCreateAPIView):
         logger.debug(f"Creating Profile with data: {serializer.validated_data}")
         serializer.save()
 
-# class ShopListCreate(generics.ListCreateAPIView):
-#     queryset = Shop.objects.all()
-#     serializer_class = ShopSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def perform_create(self, serializer):
-#         logger.debug(f"Creating Shop with data: {serializer.validated_data}")
-#         serializer.save()
-
 class EmployeeListCreate(generics.ListCreateAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
