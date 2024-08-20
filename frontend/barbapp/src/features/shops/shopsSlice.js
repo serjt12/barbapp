@@ -73,7 +73,8 @@ const shopSlice = createSlice({
             .addCase(fetchShops.rejected, (state, action) => {
                 state.status = "failed";
                 state.error = action.error.message;
-            })
+            });
+        builder
             .addCase(fetchShopDetails.pending, (state) => {
                 state.status = "loading";
             })
@@ -84,7 +85,8 @@ const shopSlice = createSlice({
             .addCase(fetchShopDetails.rejected, (state, action) => {
                 state.status = "failed";
                 state.error = action.error.message;
-            })
+            });
+        builder
             .addCase(fetchOwnedShops.pending, (state) => {
                 state.loading = true;
             })
@@ -95,7 +97,8 @@ const shopSlice = createSlice({
             .addCase(fetchOwnedShops.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            })
+            });
+        builder
             .addCase(fetchShopServices.pending, (state) => {
                 state.loading = true;
             })

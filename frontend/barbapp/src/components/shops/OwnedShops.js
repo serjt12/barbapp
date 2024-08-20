@@ -6,8 +6,7 @@ import {
     selectShopLoading,
     selectShopError,
 } from "../../features/shops/shopsSelectors";
-import { Link } from "react-router-dom";
-import { getImageUrl, formatOpeningHours } from "../../services/utils";
+import ShopsList from "./ShopsList";
 
 const OwnedShopsPage = () => {
     const dispatch = useDispatch();
@@ -35,29 +34,7 @@ const OwnedShopsPage = () => {
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     My Owned Shops
                 </h2>
-                <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                    {ownedShops.map((shop) => (
-                        <Link
-                            key={shop.id}
-                            to={`/shop/${shop.id}`}
-                            className="group"
-                        >
-                            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                                <img
-                                    src={getImageUrl(shop.image)}
-                                    alt={shop.name}
-                                    className="h-full w-full object-cover object-center group-hover:opacity-75"
-                                />
-                            </div>
-                            <h3 className="mt-4 text-sm text-gray-700">
-                                {shop.name}
-                            </h3>
-                            <p className="mt-1 text-lg font-medium text-gray-900">
-                                {formatOpeningHours(shop.opening_hours)}
-                            </p>
-                        </Link>
-                    ))}
-                </div>
+                <ShopsList shops={ownedShops} />;
             </div>
         );
     } else {

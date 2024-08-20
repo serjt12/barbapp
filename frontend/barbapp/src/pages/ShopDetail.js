@@ -21,7 +21,6 @@ const ShopDetail = () => {
         dispatch(fetchShopDetails(id));
     }, [dispatch, id]);
 
-    // Loading state
     if (status === "loading") {
         return (
             <div className="flex justify-center items-center h-64">
@@ -30,7 +29,6 @@ const ShopDetail = () => {
         );
     }
 
-    // Error state
     if (status === "failed") {
         return <div>Error: {error}</div>;
     }

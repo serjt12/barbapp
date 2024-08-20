@@ -40,7 +40,7 @@ const BookingOrProducts = ({ shopType, shopImages, shopId }) => {
                         ))}
                     </div>
                     <Link
-                        to="/products"
+                        to="products"
                         className="mt-4 px-4 py-2 bg-green-500 text-white rounded inline-block"
                     >
                         View Products

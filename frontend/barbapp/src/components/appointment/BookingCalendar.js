@@ -78,27 +78,30 @@ const BookingCalendar = ({
                             {new Date(selectedDate).toDateString()}
                         </h2>
                         <ul className="mt-4">
-                            {filteredAppointments.length > 0 ? (
-                                filteredAppointments
-                                    .sort(
-                                        (a, b) =>
-                                            new Date(a.datetime) -
-                                            new Date(b.datetime)
-                                    )
-                                    .map((appointment) => (
-                                        <li
-                                            key={appointment.id}
-                                            className="mt-2"
-                                        >
-                                            {appointment.service.name} -{" "}
-                                            {formatUTCDateTime(
-                                                appointment.datetime
-                                            )}
-                                        </li>
-                                    ))
-                            ) : (
-                                <li>No appointments for this day.</li>
-                            )}
+                            {
+                                (console.log("appointment: ", appointments),
+                                filteredAppointments.length > 0 ? (
+                                    filteredAppointments
+                                        .sort(
+                                            (a, b) =>
+                                                new Date(a.datetime) -
+                                                new Date(b.datetime)
+                                        )
+                                        .map((appointment) => (
+                                            <li
+                                                key={appointment.id}
+                                                className="mt-2"
+                                            >
+                                                {appointment.service.name} -{" "}
+                                                {formatUTCDateTime(
+                                                    appointment.datetime
+                                                )}
+                                            </li>
+                                        ))
+                                ) : (
+                                    <li>No appointments for this day.</li>
+                                ))
+                            }
                         </ul>
                     </div>
                 )}
