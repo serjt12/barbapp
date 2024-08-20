@@ -2,10 +2,17 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../services/axiosConfig";
 
 // Async thunk to fetch all shops
-export const fetchShops = createAsyncThunk("shop/fetchShops", async () => {
-    const response = await axiosInstance.get("/shops");
-    return response.data.shops;
-});
+export const fetchShops = createAsyncThunk(
+    "shop/fetchShops",
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get("/shops");
+            return response.data.shops;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 export const fetchOwnedShops = createAsyncThunk(
     "shops/fetchOwnedShops",
@@ -50,7 +57,7 @@ const shopSlice = createSlice({
     name: "shop",
     initialState: {
         shops: [],
-        selectedShop: null,
+        selectedShop: [],
         status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
         error: null,
         ownedShops: [],
@@ -58,7 +65,7 @@ const shopSlice = createSlice({
     },
     reducers: {
         clearSelectedShop(state) {
-            state.selectedShop = null;
+            state.selectedShop = [];
         },
     },
     extraReducers: (builder) => {

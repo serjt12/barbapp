@@ -15,6 +15,7 @@ import authReducer from "./features/auth/authSlice";
 import loadingReducer from "./features/loading/loadingSlice";
 import shopReducer from "./features/shops/shopsSlice";
 import appointmentsReducer from "./features/appointments/appointmentsSlice";
+import productsReducer from "./features/products/productsSlice";
 import loadingMiddleware from "./features/loading/loadingMiddleware";
 
 const persistConfig = {
@@ -31,6 +32,7 @@ const store = configureStore({
         loading: loadingReducer,
         shop: shopReducer,
         appointments: appointmentsReducer,
+        products: productsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

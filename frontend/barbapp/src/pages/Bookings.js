@@ -6,6 +6,11 @@ import {
     fetchShopDetails,
     fetchShopServices,
 } from "../features/shops/shopsSlice";
+import {
+    selectSelectedShop,
+    selectShopStatus,
+    selectShopError,
+} from "../features/shops/shopsSelectors";
 import { selectAppointments } from "../features/appointments/appointmentsSelector";
 import OpeningHourEvents from "../components/appointment/OpeningHourEvents";
 import useAppointmentEvents from "../features/appointments/useAppointmentEvents";
@@ -17,9 +22,9 @@ const Bookings = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [highlightedEvents, setHighlightedEvents] = useState([]);
 
-    const shop = useSelector((state) => state.shop.selectedShop);
-    const status = useSelector((state) => state.shop.status);
-    const error = useSelector((state) => state.shop.error);
+    const shop = useSelector(selectSelectedShop);
+    const status = useSelector(selectShopStatus);
+    const error = useSelector(selectShopError);
     const services = useSelector((state) => state.shop.services);
     const appointments = useSelector(selectAppointments);
 
