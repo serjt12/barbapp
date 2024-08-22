@@ -5,15 +5,13 @@ import ShopsList from "../components/shops/ShopsList";
 
 const Feed = () => {
     const dispatch = useDispatch();
-    const shops = useSelector((state) => state.shop?.shops);
     const status = useSelector((state) => state.shop?.status);
     const error = useSelector((state) => state.shop?.error);
+    const shops = useSelector((state) => state.shop?.shops);
 
     useEffect(() => {
-        if (status === "idle") {
-            dispatch(fetchShops());
-        }
-    }, [status, dispatch]);
+        dispatch(fetchShops());
+    }, [dispatch]);
 
     let content;
 

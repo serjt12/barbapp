@@ -29,12 +29,11 @@ const Products = () => {
 
     useEffect(() => {
         const checkIsEmpty = () => {
-            const { name, description, price, image } = formData.products[0];
-            if (name && description && price && image) {
-                setIsEmpty(false);
-            } else {
-                setIsEmpty(true);
-            }
+            const allProductsFilled = formData.products.every(
+                ({ name, description, price, image }) =>
+                    name && description && price && image
+            );
+            setIsEmpty(!allProductsFilled);
         };
         checkIsEmpty();
     }, [formData]);
@@ -49,15 +48,6 @@ const Products = () => {
         const updatedProducts = [...formData.products];
         updatedProducts[index] = { ...updatedProducts[index], [key]: value };
         setFormData({ products: updatedProducts });
-    };
-
-    const addProductField = () => {
-        setFormData({
-            products: [
-                ...formData.products,
-                { name: "", description: "", price: "", image: null },
-            ],
-        });
     };
 
     const removeProductField = (index) => {
@@ -105,14 +95,11 @@ const Products = () => {
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-6">Products</h1>
 
-            {/* List of existing products */}
             <ProductsList products={products} />
 
-            {/* Form to add new products */}
             <ProductsField
-                products={formData.products}
+                formDataProducts={formData.products}
                 onProductChange={handleProductChange}
-                onAddProduct={addProductField}
                 onRemoveProduct={removeProductField}
             />
             <button

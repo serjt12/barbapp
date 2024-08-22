@@ -1,10 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../../services/utils";
-import { FaShoppingBag } from "react-icons/fa";
+import { FaShoppingBag, FaEdit } from "react-icons/fa";
 import { FaScissors } from "react-icons/fa6";
 
-const ShopsList = ({ shops }) => {
+const ShopsList = ({ shops, onEditShop }) => {
+    const handleEditClick = (event, shop) => {
+        event.preventDefault();
+        onEditShop(shop, event);
+    };
     return (
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
             <h2 className="sr-only">Services</h2>
@@ -22,11 +26,23 @@ const ShopsList = ({ shops }) => {
                                     alt={shop.contact_info}
                                     className="h-full w-full object-cover object-center group-hover:opacity-75"
                                 />
-                                <div className="absolute top-2 right-2 left-2 p-2 bg-black h-fit w-fit rounded-full">
+                                <div className="absolute top-2 left-2 p-2 bg-black h-fit w-fit rounded-full">
                                     {shop.type !== "beauty_supplier" ? (
                                         <FaScissors className="text-yellow-300" />
                                     ) : (
                                         <FaShoppingBag className="text-yellow-300" />
+                                    )}
+                                </div>
+                                <div className="z-50">
+                                    {onEditShop && (
+                                        <button
+                                            onClick={(event) =>
+                                                handleEditClick(event, shop)
+                                            }
+                                            className="z-50 ml-2 cursor-pointer absolute bottom-2 left-2 p-2 bg-black h-fit w-fit rounded-full"
+                                        >
+                                            <FaEdit className="text-yellow-300" />
+                                        </button>
                                     )}
                                 </div>
                             </div>

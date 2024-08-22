@@ -5,8 +5,8 @@ const InputField = ({
     name,
     value,
     onChange,
-    type = "text", // Default to text input
-    options = [], // Used for select input
+    type = "text",
+    options = [],
     placeholder = "",
     className = "",
     ...props

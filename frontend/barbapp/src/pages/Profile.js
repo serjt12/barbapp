@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, updateUser } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../services/axiosConfig";
 import { FaEdit, FaCheck, FaTimes, FaPlus, FaMinus } from "react-icons/fa";
-import ShopForm from "../components/ShopForm";
+import ShopForm from "../components/shops/ShopForm";
 import ImageUploader from "../components/ImageUploader";
 import PropTypes from "prop-types";
-import OwnedShopsPage from "../components/shops/OwnedShops";
 import { getImageUrl } from "../services/utils";
+import ShopsList from "../components/shops/ShopsList";
+import { fetchOwnedShops } from "../features/shops/shopsSlice";
+import { selectOwnedShops } from "../features/shops/shopsSelectors";
 
 const AddIcons = ({ onClick, showConditional }) =>
     showConditional ? (
@@ -39,16 +41,20 @@ const Profile = () => {
     const [errors, setErrors] = useState({});
     const [showButtons, setShowButtons] = useState(false);
     const [showShopForm, setShowShopForm] = useState(false);
-    const [showShopsList, setShowShopsList] = useState(false);
+    const [selectedShop, setSelectedShop] = useState(null);
+    const [showOwnedShopsList, setShowOwnedShopsList] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchOwnedShops());
+    }, [dispatch]);
+    const shops = useSelector(selectOwnedShops);
 
     const handleLogout = async () => {
         try {
             await axiosInstance.post("/logout/");
             dispatch(logout());
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
             navigate("/login");
         } catch (error) {
             console.error("Logout error:", error);
@@ -80,7 +86,6 @@ const Profile = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log("Profile updated:", response.data);
             dispatch(updateUser(response.data.user));
             setShowButtons(false);
             setIsEditing({
@@ -127,10 +132,16 @@ const Profile = () => {
 
     const handleToggleShopForm = () => {
         setShowShopForm(!showShopForm);
+        setSelectedShop(null); // Reset selected shop when toggling the form
+    };
+
+    const handleSelectEditShop = (shop) => {
+        setSelectedShop(shop);
+        setShowShopForm(true);
     };
 
     const handleToggleShopsList = () => {
-        setShowShopsList(!showShopsList);
+        setShowOwnedShopsList(!showOwnedShopsList);
     };
 
     return (
@@ -143,12 +154,11 @@ const Profile = () => {
                             <ImageUploader
                                 label="Profile Picture"
                                 name="profile_picture"
-                                image={formData.profile_picture}
+                                value={formData.profile_picture}
                                 onChange={handleChange}
                             />
                         ) : (
                             <>
-                                {" "}
                                 <img
                                     src={getImageUrl(formData.profile_picture)}
                                     alt={user.username}
@@ -174,17 +184,15 @@ const Profile = () => {
                                     />
                                 </span>
                             </li>
-                            {
-                                <li>
-                                    <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-                                        Shops Owned{" "}
-                                        <AddIcons
-                                            onClick={handleToggleShopsList}
-                                            showConditional={showShopsList}
-                                        />
-                                    </span>
-                                </li>
-                            }
+                            <li>
+                                <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                    Shops Owned{" "}
+                                    <AddIcons
+                                        onClick={handleToggleShopsList}
+                                        showConditional={showOwnedShopsList}
+                                    />
+                                </span>
+                            </li>
                         </ul>
                     </div>
                     <form onSubmit={handleSubmit}>
@@ -263,44 +271,48 @@ const Profile = () => {
                                 {errors.profile_picture}
                             </p>
                         )}
+                        {showButtons && (
+                            <div className="flex justify-end space-x-2">
+                                <button
+                                    type="submit"
+                                    className="flex items-center bg-green-500 text-white px-4 py-2 rounded"
+                                >
+                                    <FaCheck className="mr-1" /> Save
+                                </button>
+                                <button
+                                    type="button"
+                                    className="flex items-center bg-red-500 text-white px-4 py-2 rounded"
+                                    onClick={handleCancel}
+                                >
+                                    <FaTimes className="mr-1" /> Cancel
+                                </button>
+                            </div>
+                        )}
                     </form>
-                    <button
-                        onClick={handleLogout}
-                        className="bg-red-500 text-white px-4 py-2 rounded mt-4"
-                    >
-                        Logout
-                    </button>
-                    {showButtons && (
-                        <div className=" py-2 flex flex-row space-x-2 wide">
-                            <button
-                                type="button"
-                                onClick={handleSubmit}
-                                className="bg-blue-500 text-white px-4 py-2 hover:bg-blue-700 rounded flex items-center :ho"
-                            >
-                                <FaCheck className="mr-2" /> Check
-                            </button>
-                            <button
-                                type="button"
-                                onClick={handleCancel}
-                                className="bg-red-500 text-white px-4 py-2 rounded flex items-center"
-                            >
-                                <FaTimes className="mr-2" /> Cancel
-                            </button>
-                        </div>
-                    )}
                     {showShopForm && (
-                        <div className="container mx-auto my-4 p-4 bg-white shadow rounded">
-                            <ShopForm />
-                        </div>
+                        <ShopForm focusOnEdit={true} shop={selectedShop} />
                     )}
-                    {showShopsList && (
-                        <div className="container mx-auto my-4 p-4 bg-white shadow rounded">
-                            <OwnedShopsPage />
-                        </div>
-                    )}
+                    {showOwnedShopsList ? (
+                        shops.length > 0 ? (
+                            <ShopsList
+                                shops={shops}
+                                onEditShop={handleSelectEditShop}
+                            />
+                        ) : (
+                            <p>No shops owned.</p>
+                        )
+                    ) : null}
+                    <div className="mt-6">
+                        <button
+                            onClick={handleLogout}
+                            className="bg-red-500 text-white px-4 py-2 rounded"
+                        >
+                            Logout
+                        </button>
+                    </div>
                 </div>
             ) : (
-                <p className="text-gray-600">Loading...</p>
+                <p>Loading...</p>
             )}
         </div>
     );

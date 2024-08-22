@@ -3,9 +3,8 @@ import InputField from "../shops/InputField";
 import ImageUploader from "../ImageUploader";
 
 const ProductsField = ({
-    products,
+    formDataProducts,
     onProductChange,
-    onAddProduct,
     onRemoveProduct,
 }) => {
     return (
@@ -13,11 +12,8 @@ const ProductsField = ({
             <h3 className="text-lg sm:text-xl font-semibold mb-2">
                 Product Form
             </h3>
-            {products?.map((product, index) => (
-                <div
-                    key={product.id + product.name}
-                    className="mb-4 border p-4 rounded-lg"
-                >
+            {formDataProducts?.map((product, index) => (
+                <div key={1 + index} className="mb-4 border p-4 rounded-lg">
                     <h4 className="text-md font-semibold mb-2">
                         Product: {product.name}
                     </h4>
@@ -29,6 +25,7 @@ const ProductsField = ({
                             onProductChange(index, "name", e.target.value)
                         }
                         placeholder="Enter product name"
+                        type="textarea"
                     />
                     <InputField
                         label="Description"

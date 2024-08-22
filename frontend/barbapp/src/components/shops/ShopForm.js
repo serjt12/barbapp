@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import axiosInstance from "../services/axiosConfig";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ImageUploader from "./ImageUploader";
-import OpeningHoursForm from "./shops/OpeningHoursForm";
+import ImageUploader from "../ImageUploader";
+import OpeningHoursForm from "./OpeningHoursForm";
+import { updateShop, createShop } from "../../features/shops/shopsSlice";
+import { useDispatch } from "react-redux";
 
-const ShopForm = () => {
+const ShopForm = ({ shop, focusOnEdit }) => {
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         name: "",
         location: "",
@@ -13,8 +15,8 @@ const ShopForm = () => {
         opening_hours: {},
         type: "",
     });
-
-    const [openingHours, setOpeningHours] = useState({
+    const nameInputRef = useRef(null);
+    const openingHoursEmpty = {
         Monday: { open: "", close: "" },
         Tuesday: { open: "", close: "" },
         Wednesday: { open: "", close: "" },
@@ -22,21 +24,43 @@ const ShopForm = () => {
         Friday: { open: "", close: "" },
         Saturday: { open: "", close: "" },
         Sunday: { open: "", close: "" },
-    });
+    };
+
+    const [openingHours, setOpeningHours] = useState(
+        shop?.opening_hours || openingHoursEmpty
+    );
+
+    useEffect(() => {
+        if (shop && focusOnEdit && nameInputRef.current) {
+            nameInputRef.current.focus();
+        }
+    }, [shop, focusOnEdit]);
 
     const [error, setError] = useState("");
     const [isEmpty, setIsEmpty] = useState(true);
     const navigate = useNavigate();
 
-    const onChange = (e) => {
-        const { name, value, type, files } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === "file" ? files[0] : value,
-        });
-    };
+    useEffect(() => {
+        if (shop) {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                name: shop.name,
+                location: shop.location,
+                contact_info: shop.contact_info,
+                type: shop.type,
+                image: shop.image,
+            }));
+        } else {
+            setFormData({
+                name: "",
+                location: "",
+                contact_info: "",
+                type: "",
+                image: "",
+            });
+        }
+    }, [shop]);
 
-    // Check if all required fields are filled out
     useEffect(() => {
         const checkIsEmpty = () => {
             const { name, location, contact_info, type } = formData;
@@ -49,38 +73,51 @@ const ShopForm = () => {
         checkIsEmpty();
     }, [formData]);
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        if (!isEmpty) {
-            const data = new FormData();
-            data.append("name", formData.name);
-            data.append("location", formData.location);
-            data.append("contact_info", formData.contact_info);
-            data.append("opening_hours", JSON.stringify(openingHours));
-            data.append("type", formData.type);
-            if (formData.image) data.append("image", formData.image);
-
-            try {
-                const res = await axiosInstance.post("/shops/", data, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                });
-                console.log("Shop created:", res.data);
-                navigate("/feed");
-            } catch (err) {
-                console.error(err.response?.data || "An error occurred");
-                setError(err.response?.data?.detail || "An error occurred");
-            }
+    useEffect(() => {
+        if (focusOnEdit && nameInputRef.current) {
+            nameInputRef.current.focus();
         }
+    }, [focusOnEdit]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const data = new FormData();
+        data.append("name", formData.name);
+        data.append("location", formData.location);
+        data.append("contact_info", formData.contact_info);
+        data.append("type", formData.type);
+        data.append("opening_hours", JSON.stringify(openingHours));
+        if (formData.image) {
+            data.append("image", formData.image);
+        }
+
+        try {
+            if (shop) {
+                alert(`The ${shop.name} was updated`);
+                dispatch(updateShop);
+            }
+            const response = dispatch(createShop);
+            console.info("Shop saved!", response.data);
+            navigate(`/shop/${shop.id}`);
+        } catch (error) {
+            console.error("Save shop error:", error);
+        }
+    };
+
+    const onChange = (e) => {
+        const { name, value, type, files } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === "file" ? files[0] : value,
+        });
     };
 
     return (
         <div className="container mx-auto p-4 sm:p-6 md:p-8 lg:p-10">
             <h1 className="text-2xl sm:text-3xl md:text-4xl mb-4 font-semibold">
-                Create Shop
+                {!shop ? "Create Shop" : `Update: ${shop?.name}`}
             </h1>
-            <form onSubmit={onSubmit} className="space-y-4">
+            <form onSubmit={(e) => handleSubmit(e)} className="space-y-4">
                 <div className="mb-4">
                     <label
                         htmlFor="name"
@@ -89,6 +126,7 @@ const ShopForm = () => {
                         Shop Name
                     </label>
                     <input
+                        ref={nameInputRef}
                         type="text"
                         name="name"
                         value={formData.name}
@@ -167,7 +205,7 @@ const ShopForm = () => {
                     }`}
                     disabled={isEmpty}
                 >
-                    Create Shop
+                    {!shop ? "Create Shop" : "Update Shop"}
                 </button>
             </form>
         </div>

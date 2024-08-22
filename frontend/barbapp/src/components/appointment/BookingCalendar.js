@@ -61,7 +61,7 @@ const BookingCalendar = ({
             <div className="bg-white shadow rounded-lg flex-1 lg:w-2/3">
                 <Calendar
                     header={header}
-                    events={events} // Use highlightedEvents here
+                    events={events}
                     onChange={onChange}
                     onClickTimeLine={onClickTimeLine}
                 />
@@ -78,30 +78,27 @@ const BookingCalendar = ({
                             {new Date(selectedDate).toDateString()}
                         </h2>
                         <ul className="mt-4">
-                            {
-                                (console.log("appointment: ", appointments),
-                                filteredAppointments.length > 0 ? (
-                                    filteredAppointments
-                                        .sort(
-                                            (a, b) =>
-                                                new Date(a.datetime) -
-                                                new Date(b.datetime)
-                                        )
-                                        .map((appointment) => (
-                                            <li
-                                                key={appointment.id}
-                                                className="mt-2"
-                                            >
-                                                {appointment.service.name} -{" "}
-                                                {formatUTCDateTime(
-                                                    appointment.datetime
-                                                )}
-                                            </li>
-                                        ))
-                                ) : (
-                                    <li>No appointments for this day.</li>
-                                ))
-                            }
+                            {filteredAppointments.length > 0 ? (
+                                filteredAppointments
+                                    .sort(
+                                        (a, b) =>
+                                            new Date(a.datetime) -
+                                            new Date(b.datetime)
+                                    )
+                                    .map((appointment) => (
+                                        <li
+                                            key={appointment.id}
+                                            className="mt-2"
+                                        >
+                                            {appointment.service.name} -{" "}
+                                            {formatUTCDateTime(
+                                                appointment.datetime
+                                            )}
+                                        </li>
+                                    ))
+                            ) : (
+                                <li>No appointments for this day.</li>
+                            )}
                         </ul>
                     </div>
                 )}

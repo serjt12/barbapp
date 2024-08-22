@@ -5,18 +5,15 @@ import { useParams } from "react-router-dom";
 import ShopImage from "../components/shops/ShopImage";
 import ShopInfo from "../components/shops/ShopInfo";
 import Reviews from "../components/shops/ShopReview";
-import BookingOrProducts from "../components/shops/ShopActions";
+import ShopActions from "../components/shops/ShopActions";
 
 const ShopDetail = () => {
-    const { id } = useParams(); // Get the shop ID from the URL
+    const { id } = useParams();
     const dispatch = useDispatch();
-
-    // Selectors to get shop data, status, and error from the Redux store
     const shop = useSelector((state) => state.shop.selectedShop);
     const status = useSelector((state) => state.shop.status);
     const error = useSelector((state) => state.shop.error);
 
-    // Fetch shop details when the component mounts or when the shop ID changes
     useEffect(() => {
         dispatch(fetchShopDetails(id));
     }, [dispatch, id]);
@@ -45,7 +42,7 @@ const ShopDetail = () => {
                 <Reviews reviews={shop?.reviews} />
             </div>
             <div className="col-span-1 md:col-span-2">
-                <BookingOrProducts
+                <ShopActions
                     shopType={shop?.type}
                     shopImages={shop?.images}
                     shopId={shop?.id}

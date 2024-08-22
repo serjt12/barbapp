@@ -90,8 +90,6 @@ class ServiceView(APIView):
         service.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-
 class ReviewListCreate(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer

@@ -1,8 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus, FaCheck } from "react-icons/fa";
 
 const OpeningHoursForm = ({ openingHours, setOpeningHours }) => {
-    const [dayTime, setDayTime] = useState({ day: "", open: "", close: "" });
+    const [dayTime, setDayTime] = useState({
+        day: "",
+        open: "",
+        close: "",
+    });
+
+    useEffect(() => {
+        const getCurrentDayAndTime = () => {
+            const daysOfWeek = [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+            ];
+            const now = new Date();
+            const day = daysOfWeek[now.getDay()];
+            const hours = String(now.getHours()).padStart(2, "0");
+            const minutes = String(now.getMinutes()).padStart(2, "0");
+            const time = `${hours}:${minutes}`;
+            return { day, time };
+        };
+
+        const { day, time } = getCurrentDayAndTime();
+
+        setDayTime({
+            day,
+            open: time,
+            close: time,
+        });
+    }, []);
 
     const handleAddDayTime = () => {
         if (dayTime.day && dayTime.open && dayTime.close) {

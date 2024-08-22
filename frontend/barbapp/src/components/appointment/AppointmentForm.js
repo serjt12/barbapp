@@ -7,8 +7,6 @@ const AppointmentForm = ({ services, selectedDate }) => {
     const [appointmentDate, setAppointmentDate] = useState("");
     const dispatch = useDispatch();
     const { status, error } = useSelector((state) => state.appointments);
-
-    // Helper function to check if a date is valid
     const isValidDate = (date) => {
         return date instanceof Date && !isNaN(date);
     };

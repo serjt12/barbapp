@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../services/axiosConfig";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { register } from "../features/auth/authSlice";
 
 const Register = () => {
+    const dispatch = useDispatch();
     let navigate = useNavigate();
     const [errors, setErrors] = useState({});
     const [isEmpty, setIsEmpty] = useState(true);
@@ -30,10 +32,12 @@ const Register = () => {
         };
 
         try {
-            await axiosInstance.post("/register/", newUser);
-            navigate("/login");
+            const response = await dispatch(register(newUser));
+            if (response.payload.user) {
+                navigate("/");
+            }
         } catch (err) {
-            console.log(err);
+            console.error(err);
             setErrors(err.response?.data);
         }
     };

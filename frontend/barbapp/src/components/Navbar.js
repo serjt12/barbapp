@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
-import axiosInstance from "../services/axiosConfig";
 import logo from "../assets/logo512.png";
 import { FaBars, FaTimes } from "react-icons/fa";
 
@@ -14,11 +13,8 @@ const Navbar = () => {
 
     const handleLogout = async () => {
         try {
-            await axiosInstance.post("/logout/");
-            dispatch(logout());
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            navigate("/login");
+            const res = await dispatch(logout());
+            if (res.payload.msg) navigate("/login");
         } catch (error) {
             console.error("Logout failed", error);
         }
