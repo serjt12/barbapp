@@ -1,4 +1,4 @@
 export const selectProducts = (state) => state.products.products;
-export const selectStatus = (state) => state.products.status;
-export const selectLoading = (state) => state.products.loading;
-export const selectError = (state) => state.products.error;
+export const selectProductStatus = (state) => state.products.status;
+export const selectProductLoading = (state) => state.products.loading;
+export const selectProductError = (state) => state.products.error;

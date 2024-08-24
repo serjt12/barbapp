@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaBox } from "react-icons/fa";
 import { getImageUrl } from "../../services/utils";
 
-const ProductsList = ({ products }) => {
+const ProductsList = ({ products, shopId }) => {
     return (
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
             <h2 className="sr-only">Products</h2>
@@ -11,7 +11,7 @@ const ProductsList = ({ products }) => {
                 {products?.map((product) => (
                     <Link
                         key={product.id}
-                        to={`/product/${product.id}`}
+                        to={`/product/${product.id}/?shop_id=${shopId}`}
                         className="group relative block"
                     >
                         <div className="relative">

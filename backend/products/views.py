@@ -9,24 +9,28 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class ProductListCreateView(APIView):
+class ProductView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, shop_id=None):
+    def get(self, request, shop_id=None, pk=None):
         logger.debug(f"Request data: {request.data}")
-        if shop_id:
-            # Retrieve all products for a specific shop
-            products = Product.objects.filter(shop_id=shop_id)
-        else:
-            # If no shop_id is provided, return an error
+        
+        if not shop_id:
             return Response({"error": "shop_id is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = ProductSerializer(products, many=True)
-        return Response({"products": serializer.data})
+        
+        if pk:
+            # Retrieve a single product by its primary key (pk)
+            product = get_object_or_404(Product, shop_id=shop_id, pk=pk)
+            serializer = ProductSerializer(product)
+            return Response({"product": serializer.data})
+        else:
+            # Retrieve all products for the shop
+            products = Product.objects.filter(shop_id=shop_id)
+            serializer = ProductSerializer(products, many=True)
+            return Response({"products": serializer.data})
 
     def post(self, request, shop_id=None):
         logger.debug(f"Request data: {request.data}")
-        logger.debug(f"shop_id: {shop_id}")
         if not shop_id:
             return Response({"error": "shop_id is required."}, status=status.HTTP_400_BAD_REQUEST)
         logger.debug(f"Authenticated user: {request.user}")
@@ -43,21 +47,15 @@ class ProductListCreateView(APIView):
             return Response({"products": all_products_serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ProductDetailView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get_object(self, shop_id, pk):
-        return get_object_or_404(Product, shop_id=shop_id, pk=pk)
-
     def put(self, request, shop_id, pk):
-        product = self.get_object(shop_id, pk)
+        product = get_object_or_404(Product, shop_id=shop_id, pk=pk)
         serializer = ProductSerializer(product, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"products": serializer.data})
+            return Response({"product": serializer.data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, shop_id, pk):
-        product = self.get_object(shop_id, pk)
+        product = get_object_or_404(Product, shop_id=shop_id, pk=pk)
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

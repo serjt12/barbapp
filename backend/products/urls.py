@@ -1,12 +1,12 @@
 from django.urls import path
-from .views import ProductListCreateView, ProductDetailView
+from .views import ProductView
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
 
-    path('products/<int:shop_id>/', ProductListCreateView.as_view(), name='product-list-create'),
-    path('products/<int:shop_id>/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
+    path('products/<int:shop_id>/', ProductView.as_view(), name='product-list-create'),
+    path('products/<int:shop_id>/<int:pk>/', ProductView.as_view(), name='product-detail'),
 ]
 
 if settings.DEBUG:

@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import Feed from "./pages/Feed";
 import Bookings from "./pages/Bookings";
 import ShopDetail from "./pages/ShopDetail";
+import ProductDetail from "./pages/ProductDetail";
 import Products from "./pages/Products";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -40,6 +41,10 @@ function App() {
                         <Route
                             path="/shop/:id/products"
                             element={<PrivateRoute component={Products} />}
+                        />
+                        <Route
+                            path="/product/:id"
+                            element={<PrivateRoute component={ProductDetail} />}
                         />
                     </Routes>
                 </div>

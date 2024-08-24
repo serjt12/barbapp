@@ -10,8 +10,8 @@ import {
 } from "../features/products/productsSlice";
 import {
     selectProducts,
-    selectError,
-    selectStatus,
+    selectProductError,
+    selectProductStatus,
 } from "../features/products/productSelectors";
 import { selectOwnedShops } from "../features/shops/shopsSelectors";
 import { fetchOwnedShops } from "../features/shops/shopsSlice";
@@ -20,8 +20,8 @@ const Products = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const products = useSelector(selectProducts);
-    const status = useSelector(selectStatus);
-    const error = useSelector(selectError);
+    const status = useSelector(selectProductStatus);
+    const error = useSelector(selectProductError);
     const ownShops = useSelector(selectOwnedShops);
 
     // Check if the user owns the shop
@@ -111,7 +111,7 @@ const Products = () => {
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-6">Products</h1>
 
-            <ProductsList products={products} />
+            <ProductsList products={products} shopId={id} />
 
             {/* Conditionally render ProductsField if the user is the shop owner */}
             {isOwner && (
