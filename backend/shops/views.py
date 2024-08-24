@@ -128,6 +128,7 @@ class ShopView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
+        logger.debug(f"Request Data: {request.data}")
         try:
             shop = Shop.objects.get(pk=pk, owner=request.user)
         except Shop.DoesNotExist:

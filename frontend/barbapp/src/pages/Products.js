@@ -13,6 +13,8 @@ import {
     selectError,
     selectStatus,
 } from "../features/products/productSelectors";
+import { selectOwnedShops } from "../features/shops/shopsSelectors";
+import { fetchOwnedShops } from "../features/shops/shopsSlice";
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -20,12 +22,37 @@ const Products = () => {
     const products = useSelector(selectProducts);
     const status = useSelector(selectStatus);
     const error = useSelector(selectError);
+    const ownShops = useSelector(selectOwnedShops);
+
+    // Check if the user owns the shop
+    const isOwner = ownShops.some((shop) => shop.id === parseInt(id));
 
     // Initialize form data with one empty product form
     const [formData, setFormData] = useState({
         products: [{ name: "", description: "", price: "", image: null }],
     });
     const [isEmpty, setIsEmpty] = useState(true);
+
+    const addProductField = () => {
+        setFormData((prevState) => ({
+            products: [
+                ...prevState.products,
+                { name: "", description: "", price: "", image: null },
+            ],
+        }));
+    };
+
+    const handleProductChange = (index, key, value) => {
+        const updatedProducts = [...formData.products];
+        updatedProducts[index] = { ...updatedProducts[index], [key]: value };
+        setFormData({ products: updatedProducts });
+    };
+
+    const removeProductField = (index) => {
+        const updatedProducts = [...formData.products];
+        updatedProducts.splice(index, 1);
+        setFormData({ products: updatedProducts });
+    };
 
     useEffect(() => {
         const checkIsEmpty = () => {
@@ -41,20 +68,9 @@ const Products = () => {
     useEffect(() => {
         if (id) {
             dispatch(fetchProducts(id));
+            dispatch(fetchOwnedShops());
         }
     }, [dispatch, id]);
-
-    const handleProductChange = (index, key, value) => {
-        const updatedProducts = [...formData.products];
-        updatedProducts[index] = { ...updatedProducts[index], [key]: value };
-        setFormData({ products: updatedProducts });
-    };
-
-    const removeProductField = (index) => {
-        const updatedProducts = [...formData.products];
-        updatedProducts.splice(index, 1);
-        setFormData({ products: updatedProducts });
-    };
 
     const handleSave = async () => {
         // Loop through all the products in the form data and save them
@@ -97,20 +113,26 @@ const Products = () => {
 
             <ProductsList products={products} />
 
-            <ProductsField
-                formDataProducts={formData.products}
-                onProductChange={handleProductChange}
-                onRemoveProduct={removeProductField}
-            />
-            <button
-                disabled={isEmpty}
-                onClick={handleSave}
-                className={`mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:bg-gray-700 ${
-                    isEmpty ? "opacity-50" : ""
-                }`}
-            >
-                Save Changes
-            </button>
+            {/* Conditionally render ProductsField if the user is the shop owner */}
+            {isOwner && (
+                <>
+                    <ProductsField
+                        formDataProducts={formData.products}
+                        onProductChange={handleProductChange}
+                        onRemoveProduct={removeProductField}
+                        onAddProduct={addProductField}
+                    />
+                    <button
+                        disabled={isEmpty}
+                        onClick={handleSave}
+                        className={`mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:bg-gray-700 ${
+                            isEmpty ? "opacity-50" : ""
+                        }`}
+                    >
+                        Save Changes
+                    </button>
+                </>
+            )}
         </div>
     );
 };

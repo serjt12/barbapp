@@ -35,3 +35,7 @@
 #dayCell .inactiveDay {
     opacity: 0.5;
 }
+
+.dailyHour {
+    cursor: pointer;
+}

@@ -6,6 +6,7 @@ const ProductsField = ({
     formDataProducts,
     onProductChange,
     onRemoveProduct,
+    onAddProduct,
 }) => {
     return (
         <div>
@@ -60,6 +61,7 @@ const ProductsField = ({
                             onProductChange(index, "image", e.target.files[0])
                         }
                     />
+
                     <button
                         type="button"
                         onClick={() => onRemoveProduct(index)}
@@ -69,6 +71,13 @@ const ProductsField = ({
                     </button>
                 </div>
             ))}
+            <button
+                type="button"
+                onClick={onAddProduct}
+                className="mt-4 text-blue-500 hover:text-blue-700"
+            >
+                Add Product
+            </button>
         </div>
     );
 };

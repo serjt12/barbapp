@@ -4,11 +4,36 @@ import ImageUploader from "../ImageUploader";
 import OpeningHoursForm from "./OpeningHoursForm";
 import { updateShop, createShop } from "../../features/shops/shopsSlice";
 import { useDispatch } from "react-redux";
-
+import ProductsField from "../products/ProductsField";
+import { createProduct } from "../../features/products/productsSlice";
 const ShopForm = ({ shop, focusOnEdit }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const nameInputRef = useRef(null);
+    const [formProductData, setFormProduct] = useState({
+        products: [{ name: "", description: "", price: "", image: null }],
+    });
+
+    const handleProductChange = (index, key, value) => {
+        const updatedProducts = [...formProductData.products];
+        updatedProducts[index] = { ...updatedProducts[index], [key]: value };
+        setFormProduct({ products: updatedProducts });
+    };
+
+    const removeProductField = (index) => {
+        const updatedProducts = [...formProductData.products];
+        updatedProducts.splice(index, 1);
+        setFormProduct({ products: updatedProducts });
+    };
+
+    const addProductField = () => {
+        setFormProduct((prevState) => ({
+            products: [
+                ...prevState.products,
+                { name: "", description: "", price: "", image: null },
+            ],
+        }));
+    };
 
     const [formData, setFormData] = useState({
         name: "",
@@ -72,7 +97,6 @@ const ShopForm = ({ shop, focusOnEdit }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-        let headers = "";
 
         const data = new FormData();
         data.append("name", formData.name);
@@ -88,14 +112,36 @@ const ShopForm = ({ shop, focusOnEdit }) => {
             let response;
             if (shop) {
                 response = await dispatch(
-                    updateShop({ shopId: shop.id, data, headers })
+                    updateShop({ shopId: shop.id, data })
                 );
-                console.log("response: ", response);
-                if (response.payload?.id) navigate(`/shop/${shop.id}`);
+                if (response.payload?.id) {
+                    navigate(`/shop/${shop.id}`);
+                }
             } else {
                 response = await dispatch(createShop(data));
-                navigate(`/shop/${response.payload?.id}`);
+                const newShopId = response.payload?.id;
+
+                if (newShopId && formData.type === "beauty_supplier") {
+                    for (const product of formProductData.products) {
+                        const productData = new FormData();
+                        productData.append("name", product.name);
+                        productData.append("description", product.description);
+                        productData.append("price", product.price);
+                        if (product.image instanceof File) {
+                            productData.append("image", product.image);
+                        }
+
+                        await dispatch(
+                            createProduct({ shopId: newShopId, productData })
+                        );
+                    }
+                }
+
+                if (newShopId) {
+                    navigate(`/shop/${newShopId}`);
+                }
             }
+
             if (!response.error) {
                 alert(`Shop ${shop ? "updated" : "created"} successfully!`);
             } else {
@@ -186,6 +232,16 @@ const ShopForm = ({ shop, focusOnEdit }) => {
                         <option value="beauty_supplier">Beauty Supplier</option>
                     </select>
                 </div>
+                {/* {formData.type === "beauty_supplier" ? (
+                    <ProductsField
+                        formDataProducts={formProductData.products}
+                        onProductChange={handleProductChange}
+                        onRemoveProduct={removeProductField}
+                        onAddProduct={addProductField}
+                    />
+                ) : (
+                    "<ServicesField />"
+                )} */}
                 <ImageUploader
                     label="Shop Image"
                     name="image"

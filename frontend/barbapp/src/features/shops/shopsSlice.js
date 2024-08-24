@@ -5,7 +5,6 @@ import axiosInstance from "../../services/axiosConfig";
 export const createShop = createAsyncThunk(
     "shop/createShop",
     async (data, { rejectWithValue }) => {
-        console.log("data: ", data);
         try {
             const response = await axiosInstance.post("/shops/", data, {
                 headers: {
@@ -59,12 +58,16 @@ export const fetchShopDetails = createAsyncThunk(
 
 export const updateShop = createAsyncThunk(
     "shop/updateShop",
-    async ({ shopId, data, headers }, { rejectWithValue }) => {
+    async ({ shopId, data }, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.put(
                 `/shops/${shopId}/`,
                 data,
-                { headers: headers }
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
             );
             return response.data;
         } catch (error) {

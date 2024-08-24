@@ -25,8 +25,11 @@ class ProductListCreateView(APIView):
         return Response({"products": serializer.data})
 
     def post(self, request, shop_id=None):
+        logger.debug(f"Request data: {request.data}")
+        logger.debug(f"shop_id: {shop_id}")
         if not shop_id:
             return Response({"error": "shop_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+        logger.debug(f"Authenticated user: {request.user}")
         
         shop = get_object_or_404(Shop, id=shop_id, owner=request.user)
         serializer = ProductSerializer(data=request.data)

@@ -33,7 +33,6 @@ export const fetchProductDetails = createAsyncThunk(
 export const createProduct = createAsyncThunk(
     "products/createProduct",
     async ({ shopId, productData }, { rejectWithValue }) => {
-        console.log("productData: ", productData);
         try {
             const response = await axiosInstance.post(
                 `/products/${shopId}/`,
