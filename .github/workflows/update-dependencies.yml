@@ -10,18 +10,23 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3 # Ensure this is the latest version
+              uses: actions/checkout@v3
 
             - name: Set up Python
-              uses: actions/setup-python@v4 # Ensure this is the latest version
+              uses: actions/setup-python@v4
               with:
-                  python-version: "3.9"
+                  python-version: "3.10"
 
             - name: Install pip-tools
               run: pip install pip-tools
 
             - name: Compile requirements
-              run: pip-compile requirements.in
+              run: |
+                  if [ -f requirements.in ]; then
+                    pip-compile requirements.in
+                  else
+                    echo "requirements.in not found. Skipping pip-compile."
+                  fi
 
             - name: Commit and push if there are changes
               run: |
