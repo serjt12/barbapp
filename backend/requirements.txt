@@ -194,20 +194,6 @@ keras==3.4.1
     # via
     #   -r requirements.in
     #   tensorflow-intel
-kivy==2.3.0
-    # via -r requirements.in
-kivy-deps-glew==0.3.1
-    # via
-    #   -r requirements.in
-    #   kivy
-kivy-deps-sdl2==0.7.0
-    # via
-    #   -r requirements.in
-    #   kivy
-kivy-garden==0.1.5
-    # via
-    #   -r requirements.in
-    #   kivy
 libclang==18.1.1
     # via
     #   -r requirements.in
