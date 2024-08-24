@@ -1,4 +1,4 @@
-absl-py==2.1.0
+absl-py==1.4.0
 art==6.2
 asgiref==3.8.1
 astunparse==1.6.3
