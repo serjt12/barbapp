@@ -7,22 +7,19 @@ const AppointmentForm = ({ services, selectedDate }) => {
     const [appointmentDate, setAppointmentDate] = useState("");
     const dispatch = useDispatch();
     const { status, error } = useSelector((state) => state.appointments);
-
-    // Helper function to check if a date is valid
     const isValidDate = (date) => {
         return date instanceof Date && !isNaN(date);
     };
 
-    // Format selectedDate to "YYYY-MM-DDTHH:MM" for the datetime-local input
     useEffect(() => {
         if (selectedDate) {
             const date = new Date(selectedDate);
             if (isValidDate(date)) {
-                const formattedDate = date.toISOString().slice(0, 16); // Get the date and time in "YYYY-MM-DDTHH:MM" format
+                const formattedDate = date.toISOString().slice(0, 16);
                 setAppointmentDate(formattedDate);
             } else {
                 console.error("Invalid date:", selectedDate);
-                setAppointmentDate(""); // Reset the input if the date is invalid
+                setAppointmentDate("");
             }
         }
     }, [selectedDate]);
@@ -51,7 +48,7 @@ const AppointmentForm = ({ services, selectedDate }) => {
     return (
         <form
             onSubmit={handleSubmit}
-            className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"
+            className="max-w-lg mx-auto bg-white p-6 m-5 rounded-lg shadow-md"
         >
             <div className="mb-4">
                 <label

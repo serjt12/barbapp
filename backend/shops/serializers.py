@@ -1,6 +1,10 @@
 from django.conf import settings
+from django.utils import timezone
+from pytz import timezone as pytz_timezone
+from datetime import datetime
 from rest_framework import serializers
 from .models import User, Profile, Shop, Employee, Service, Appointment, Review, Role
+from .base64 import Base64ImageField
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,7 +28,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class ShopSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
-    image = serializers.ImageField(required=False, use_url=False)
+    image = Base64ImageField(required=False, use_url=False)
 
     class Meta:
         model = Shop
@@ -75,21 +79,47 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['id', 'user', 'service', 'datetime']
+        fields = ['id', 'user', 'service', 'datetime', 'shop']
 
     def validate(self, data):
-        shop = data['service'].shop
+        appointment_datetime = data.get('datetime')
+        shop = data.get('shop')
 
-        # Check if the appointment falls within the shop's operating hours
-        opening_hours = shop.opening_hours
-        day_of_week = data['datetime'].strftime('%A')
-        if day_of_week in opening_hours:
-            opening_time, closing_time = opening_hours[day_of_week].split('-')
-            appointment_time = data['datetime'].strftime('%H:%M')
-            if not (opening_time <= appointment_time <= closing_time):
-                raise serializers.ValidationError('Appointment time is outside of shop hours.')
+        if not shop:
+            raise serializers.ValidationError("Shop must be provided.")
+
+        # Convert the appointment datetime to the shop's timezone
+        shop_timezone = pytz_timezone(shop.timezone)  # Assuming `shop.timezone` holds the timezone string (e.g., 'America/New_York')
+        appointment_datetime = appointment_datetime.astimezone(shop_timezone)
+
+        # Validate the appointment day
+        weekday = appointment_datetime.strftime('%A')
+        opening_hours = shop.opening_hours.get(weekday)
+
+        if not opening_hours:
+            raise serializers.ValidationError(f"The shop is closed on {weekday}.")
+
+        opening_time, closing_time = opening_hours.split('-')
+        opening_time = datetime.strptime(opening_time, '%H:%M').time()
+        closing_time = datetime.strptime(closing_time, '%H:%M').time()
+
+        # Check if the appointment time is within the opening hours
+        if not (opening_time <= appointment_datetime.time() <= closing_time):
+            raise serializers.ValidationError("Appointment time is outside of the shop's opening hours.")
+
+        # Store the datetime in UTC in the database
+        data['datetime'] = appointment_datetime.astimezone(pytz_timezone('UTC'))
 
         return data
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        
+        # Convert the datetime back to the shop's timezone for display
+        shop_timezone = pytz_timezone(instance.shop.timezone)
+        representation['datetime'] = instance.datetime.astimezone(shop_timezone).isoformat()
+        
+        return representation
 
 class ReviewSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../../services/utils";
 
-const BookingOrProducts = ({ shopType, shopImages, shopId }) => {
+const ShopActions = ({ shopType, thumbnailsImages }) => {
     return (
         <div className="mt-8">
             {shopType === "beauty_shop" || shopType === "independent" ? (
@@ -10,14 +10,16 @@ const BookingOrProducts = ({ shopType, shopImages, shopId }) => {
                         Book an Appointment
                     </h2>
                     <div className="flex space-x-2 mt-4">
-                        {shopImages?.slice(0, 3).map((thumbnail, index) => (
-                            <img
-                                key={index}
-                                src={getImageUrl(thumbnail)}
-                                alt={`Thumbnail ${index + 1}`}
-                                className="w-20 h-20 object-cover rounded"
-                            />
-                        ))}
+                        {thumbnailsImages
+                            ?.slice(0, 3)
+                            .map((thumbnail, index) => (
+                                <img
+                                    key={index}
+                                    src={getImageUrl(thumbnail)}
+                                    alt={`Thumbnail ${index + 1}`}
+                                    className="w-20 h-20 object-cover rounded"
+                                />
+                            ))}
                     </div>
                     <Link
                         to="bookings"
@@ -30,17 +32,19 @@ const BookingOrProducts = ({ shopType, shopImages, shopId }) => {
                 <div>
                     <h2 className="text-2xl font-semibold">Our Products</h2>
                     <div className="flex space-x-2 mt-4">
-                        {shopImages?.slice(0, 3).map((thumbnail, index) => (
-                            <img
-                                key={index}
-                                src={thumbnail}
-                                alt={`Thumbnail ${index + 1}`}
-                                className="w-20 h-20 object-cover rounded"
-                            />
-                        ))}
+                        {thumbnailsImages
+                            ?.slice(0, 5)
+                            .map((thumbnail, index) => (
+                                <img
+                                    key={index}
+                                    src={getImageUrl(thumbnail)}
+                                    alt={`Thumbnail ${index + 1}`}
+                                    className="w-20 h-20 object-cover rounded"
+                                />
+                            ))}
                     </div>
                     <Link
-                        to="/products"
+                        to="products"
                         className="mt-4 px-4 py-2 bg-green-500 text-white rounded inline-block"
                     >
                         View Products
@@ -51,4 +55,4 @@ const BookingOrProducts = ({ shopType, shopImages, shopId }) => {
     );
 };
 
-export default BookingOrProducts;
+export default ShopActions;

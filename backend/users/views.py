@@ -27,7 +27,14 @@ class RegisterView(APIView):
             try:
                 user = serializer.save()
                 logger.debug(f"User created: {user}")
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                response_data = {
+                    'user': serializer.data,
+                    'refresh': str(refresh),
+                    'access': access_token,
+                }
+                return Response(response_data, status=status.HTTP_201_CREATED)
             except Exception as e:
                 logger.error(f"Error saving user: {e}")
                 return Response({'detail': 'Error saving user'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'shops',
     'users',
+    'products',
     'barbapp'
 ]
 
@@ -113,6 +114,9 @@ LOGGING = {
 # Add the URL where users are redirected to after login (optional)
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+USE_TZ = True
+TIME_ZONE = 'UTC'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

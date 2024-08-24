@@ -50,6 +50,7 @@ class Shop(models.Model):
     contact_info = models.CharField(max_length=200, blank=True)
     opening_hours = models.JSONField(default=dict)  # Example: {'Monday': '09:00-17:00', 'Tuesday': '09:00-17:00'}
     image = models.ImageField(upload_to='shop_images', null=True, blank=True)
+    timezone = models.CharField(max_length=50, default='UTC')
     
     def __str__(self):
         return self.name

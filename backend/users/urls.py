@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import RegisterView, LoginView, LogoutView, GoogleLogin, UpdateProfileView
+from .views import RegisterView, LoginView, LogoutView, GoogleLogin, UpdateProfileView, RefreshTokenView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -10,4 +10,5 @@ urlpatterns = [
     path('auth/registration/', include('dj_rest_auth.registration.urls')),  # This includes registration URLs for dj-rest-auth
     path('auth/social/', include('allauth.socialaccount.urls')),  # Consolidate social account URLs
     path('auth/google/', GoogleLogin.as_view(), name='google_login'),
+    path('token/refresh/', RefreshTokenView.as_view(), name='token_refresh')
 ]

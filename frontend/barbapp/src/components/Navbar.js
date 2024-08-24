@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
-import axiosInstance from "../services/axiosConfig";
 import logo from "../assets/logo512.png";
 import { FaBars, FaTimes } from "react-icons/fa";
 
@@ -14,11 +13,8 @@ const Navbar = () => {
 
     const handleLogout = async () => {
         try {
-            await axiosInstance.post("/logout/");
-            dispatch(logout());
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            navigate("/login");
+            const res = await dispatch(logout());
+            if (res.payload.msg) navigate("/login");
         } catch (error) {
             console.error("Logout failed", error);
         }
@@ -33,7 +29,7 @@ const Navbar = () => {
                     <a href="/" className="rounded-md px-3">
                         <img className="h-8 w-auto" src={logo} alt="Barbapp" />
                     </a>
-                    <div className="ml-4 hidden sm:flex items-center">
+                    <div className="ml-4 flex max-sm:hidden items-center">
                         {isLoggedIn && (
                             <div className="flex space-x-4">
                                 <a
@@ -54,7 +50,7 @@ const Navbar = () => {
                         )}
                     </div>
                 </div>
-                <div className="sm:hidden flex items-center z-50">
+                <div className="sm:invisible flex items-center z-50">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="text-white focus:outline-none"
@@ -62,7 +58,7 @@ const Navbar = () => {
                         {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
                     </button>
                 </div>
-                <div className="hidden sm:flex items-center text-white">
+                <div className="flex max-sm:hidden items-center text-white">
                     {!isLoggedIn ? (
                         <>
                             <Link to="/login" className="mr-4">
@@ -80,9 +76,9 @@ const Navbar = () => {
             <div
                 className={`fixed inset-0 bg-gray-800 bg-opacity-75 z-40 transition-transform transform ${
                     isOpen ? "translate-x-0" : "translate-x-full"
-                } sm:hidden`}
+                } sm:hidden flex items-center justify-center`}
             >
-                <div className="flex flex-col items-center py-4">
+                <div className="flex flex-col items-center">
                     {isLoggedIn && (
                         <>
                             <Link

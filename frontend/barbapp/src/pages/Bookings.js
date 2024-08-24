@@ -6,6 +6,11 @@ import {
     fetchShopDetails,
     fetchShopServices,
 } from "../features/shops/shopsSlice";
+import {
+    selectSelectedShop,
+    selectShopStatus,
+    selectShopError,
+} from "../features/shops/shopsSelectors";
 import { selectAppointments } from "../features/appointments/appointmentsSelector";
 import OpeningHourEvents from "../components/appointment/OpeningHourEvents";
 import useAppointmentEvents from "../features/appointments/useAppointmentEvents";
@@ -17,9 +22,9 @@ const Bookings = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [highlightedEvents, setHighlightedEvents] = useState([]);
 
-    const shop = useSelector((state) => state.shop.selectedShop);
-    const status = useSelector((state) => state.shop.status);
-    const error = useSelector((state) => state.shop.error);
+    const shop = useSelector(selectSelectedShop);
+    const status = useSelector(selectShopStatus);
+    const error = useSelector(selectShopError);
     const services = useSelector((state) => state.shop.services);
     const appointments = useSelector(selectAppointments);
 
@@ -43,36 +48,28 @@ const Bookings = () => {
     };
 
     const handleClickTimeLine = (date) => {
-        // Create the full Date object, including time
-        const localDate = new Date(
-            Date.UTC(date.year, date.month, date.day, date.hour)
+        const localDate = new Date(date.year, date.month, date.day, date.hour);
+
+        const utcDate = new Date(
+            localDate.getTime() - localDate.getTimezoneOffset() * 60000
         );
 
-        // Log to check the localDate and its conversion
-        console.log("Local Date:", localDate.toISOString());
-
-        if (isNaN(localDate.getTime())) {
-            console.error("Invalid date:", localDate);
+        if (isNaN(utcDate.getTime())) {
+            console.error("Invalid date:", utcDate);
             return;
         }
 
-        // Update the selectedDate
-        setSelectedDate(localDate);
+        setSelectedDate(utcDate);
 
-        // Highlight event
-        const eventDuration = 60 * 60 * 1000; // 1 hour in milliseconds
+        const eventDuration = 60 * 60 * 1000;
         const newEvent = {
             id: `selected-time-${Date.now()}`,
-            color: "#FF6347", // Highlight color
-            from: localDate.toISOString(), // Start time
-            to: new Date(localDate.getTime() + eventDuration).toISOString(), // End time (1 hour later)
+            color: "#ecd245",
+            from: utcDate.toISOString(),
+            to: new Date(utcDate.getTime() + eventDuration).toISOString(),
             title: "Selected Time",
         };
 
-        // Log new event for debugging
-        console.log("New Event:", newEvent);
-
-        // Replace the highlightedEvents array with the new event
         setHighlightedEvents([newEvent]);
     };
 
@@ -88,7 +85,6 @@ const Bookings = () => {
         return <div>Error: {error}</div>;
     }
 
-    // Combine events inside the BookingCalendar component
     const events = [
         ...openingHourEvents,
         ...appointmentEvents,
@@ -103,12 +99,12 @@ const Bookings = () => {
             <p className="mt-4 text-lg">Select a date to view appointments.</p>
             <BookingCalendar
                 appointments={appointments}
-                events={events} // Pass the combined events
+                events={events}
                 onChange={handleDateChange}
                 selectedDate={selectedDate}
                 services={services}
                 onClickTimeLine={handleClickTimeLine}
-                highlightedEvents={highlightedEvents} // Ensure highlightedEvents is passed
+                highlightedEvents={highlightedEvents}
             />
         </div>
     );

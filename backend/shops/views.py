@@ -40,15 +40,6 @@ class ProfileListCreate(generics.ListCreateAPIView):
         logger.debug(f"Creating Profile with data: {serializer.validated_data}")
         serializer.save()
 
-# class ShopListCreate(generics.ListCreateAPIView):
-#     queryset = Shop.objects.all()
-#     serializer_class = ShopSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def perform_create(self, serializer):
-#         logger.debug(f"Creating Shop with data: {serializer.validated_data}")
-#         serializer.save()
-
 class EmployeeListCreate(generics.ListCreateAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
@@ -61,7 +52,8 @@ class EmployeeListCreate(generics.ListCreateAPIView):
 class ServiceView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, shop_id=None):
+    def get(self, request):
+        shop_id = request.query_params.get('shop_id')  # Get shop_id from query parameters
         if shop_id:
             services = Service.objects.filter(shop__id=shop_id)
         else:
@@ -97,8 +89,6 @@ class ServiceView(APIView):
 
         service.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
 
 class ReviewListCreate(generics.ListCreateAPIView):
     queryset = Review.objects.all()
@@ -138,12 +128,13 @@ class ShopView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
+        logger.debug(f"Request Data: {request.data}")
         try:
             shop = Shop.objects.get(pk=pk, owner=request.user)
         except Shop.DoesNotExist:
             return Response({'error': 'Shop not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = ShopSerializer(shop, data=request.data)
+        serializer = ShopSerializer(shop, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -156,9 +147,7 @@ class ShopView(APIView):
             return Response({'error': 'Shop not found'}, status=status.HTTP_404_NOT_FOUND)
 
         shop.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    
-from rest_framework.response import Response
+        return Response(status=status.HTTP_204_NO_CONTENT) 
 
 class OwnedShopListView(generics.ListAPIView):
     serializer_class = ShopSerializer

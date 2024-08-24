@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import axiosInstance from "../services/axiosConfig";
-import { login } from "../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
+import { login as loginThunk, loginGoogle } from "../features/auth/authSlice";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -26,26 +25,27 @@ const Login = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form submitted");
         if (username && password) {
             try {
-                const res = await axiosInstance.post("/login/", {
-                    username,
-                    password,
-                });
+                // Dispatch login thunk
+                const resultAction = await dispatch(
+                    loginThunk({ username, password })
+                );
 
-                const { access, refresh, user } = res.data;
-                dispatch(login({ user, access, refresh }));
-                localStorage.setItem("accessToken", access);
-                localStorage.setItem("refreshToken", refresh);
-                navigate("/");
+                if (loginThunk.fulfilled.match(resultAction)) {
+                    const { user } = resultAction.payload;
+                    if (user) {
+                        navigate("/");
+                    }
+                    setError("An unexpected error occurred");
+                } else {
+                    throw new Error(
+                        resultAction.payload.error || "Login failed"
+                    );
+                }
             } catch (err) {
-                console.error(
-                    err.response?.data || "An unexpected error occurred"
-                );
-                setError(
-                    err.response?.data?.detail || "An unexpected error occurred"
-                );
+                console.error(err.message || "An unexpected error occurred");
+                setError(err.message || "An unexpected error occurred");
             }
         }
     };
@@ -53,25 +53,15 @@ const Login = () => {
     const responseGoogle = async (response) => {
         const accessToken = response.credential;
 
-        try {
-            const res = await axiosInstance.post("/auth/google/", {
-                access_token: accessToken,
-            });
+        const res = await dispatch(loginGoogle(accessToken));
 
-            const { access, refresh, user } = res.data;
-            dispatch(login({ user, access, refresh }));
-            localStorage.setItem("accessToken", access);
-            localStorage.setItem("refreshToken", refresh);
+        if (res.payload?.user) {
             navigate("/");
-        } catch (error) {
-            console.error(
-                "Google login error:",
-                setError(
-                    error.response?.data?.detail ||
-                        "Google authentication failed"
-                )
-            );
         }
+
+        setError(
+            error.response?.data?.detail || "Google authentication failed"
+        );
     };
 
     return (

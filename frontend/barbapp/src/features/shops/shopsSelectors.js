@@ -4,3 +4,4 @@ export const selectShopError = (state) => state.shop.error;
 export const selectOwnedShops = (state) => state.shop.ownedShops;
 export const selectShopLoading = (state) => state.shop.loading;
 export const selectSelectedShop = (state) => state.shop.selectedShop;
+export const selectShopServices = (state) => state.shop.services;
