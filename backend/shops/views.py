@@ -133,7 +133,7 @@ class ShopView(APIView):
         except Shop.DoesNotExist:
             return Response({'error': 'Shop not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = ShopSerializer(shop, data=request.data)
+        serializer = ShopSerializer(shop, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -146,9 +146,7 @@ class ShopView(APIView):
             return Response({'error': 'Shop not found'}, status=status.HTTP_404_NOT_FOUND)
 
         shop.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    
-from rest_framework.response import Response
+        return Response(status=status.HTTP_204_NO_CONTENT) 
 
 class OwnedShopListView(generics.ListAPIView):
     serializer_class = ShopSerializer

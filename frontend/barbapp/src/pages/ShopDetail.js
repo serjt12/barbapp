@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchShopDetails } from "../features/shops/shopsSlice";
 import { useParams } from "react-router-dom";
@@ -6,16 +6,44 @@ import ShopImage from "../components/shops/ShopImage";
 import ShopInfo from "../components/shops/ShopInfo";
 import Reviews from "../components/shops/ShopReview";
 import ShopActions from "../components/shops/ShopActions";
+import {
+    selectSelectedShop,
+    selectShopError,
+    selectShopStatus,
+} from "../features/shops/shopsSelectors";
+import { fetchProducts } from "../features/products/productsSlice";
+import { fetchShopServices } from "../features/shops/shopsSlice";
 
 const ShopDetail = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const shop = useSelector((state) => state.shop.selectedShop);
-    const status = useSelector((state) => state.shop.status);
-    const error = useSelector((state) => state.shop.error);
+    const shop = useSelector(selectSelectedShop);
+    const status = useSelector(selectShopStatus);
+    const error = useSelector(selectShopError);
+    const [thumbnailsImages, setThumbnailsImages] = useState([]);
+    const [shopType, setShopType] = useState(null);
 
     useEffect(() => {
-        dispatch(fetchShopDetails(id));
+        dispatch(fetchShopDetails(id)).then((result) => {
+            const shopData = result.payload;
+            setShopType(shopData?.type);
+
+            if (shopData?.type === "beauty_supplier") {
+                dispatch(fetchProducts(id)).then((result) => {
+                    const images = result.payload
+                        ?.filter((item) => item.hasOwnProperty("image"))
+                        .map((item) => item.image);
+                    setThumbnailsImages(images || []);
+                });
+            } else {
+                dispatch(fetchShopServices(id)).then((result) => {
+                    const images = result.payload
+                        ?.filter((item) => item.hasOwnProperty("image"))
+                        .map((item) => item.image);
+                    setThumbnailsImages(images || []);
+                });
+            }
+        });
     }, [dispatch, id]);
 
     if (status === "loading") {
@@ -43,9 +71,8 @@ const ShopDetail = () => {
             </div>
             <div className="col-span-1 md:col-span-2">
                 <ShopActions
-                    shopType={shop?.type}
-                    shopImages={shop?.images}
-                    shopId={shop?.id}
+                    shopType={shopType}
+                    thumbnailsImages={thumbnailsImages}
                 />
             </div>
         </div>

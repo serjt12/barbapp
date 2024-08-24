@@ -7,6 +7,9 @@ import { useDispatch } from "react-redux";
 
 const ShopForm = ({ shop, focusOnEdit }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const nameInputRef = useRef(null);
+
     const [formData, setFormData] = useState({
         name: "",
         location: "",
@@ -15,7 +18,7 @@ const ShopForm = ({ shop, focusOnEdit }) => {
         opening_hours: {},
         type: "",
     });
-    const nameInputRef = useRef(null);
+
     const openingHoursEmpty = {
         Monday: { open: "", close: "" },
         Tuesday: { open: "", close: "" },
@@ -29,6 +32,28 @@ const ShopForm = ({ shop, focusOnEdit }) => {
     const [openingHours, setOpeningHours] = useState(
         shop?.opening_hours || openingHoursEmpty
     );
+    const [error, setError] = useState("");
+    const [isEmpty, setIsEmpty] = useState(true);
+
+    useEffect(() => {
+        if (shop) {
+            setFormData({
+                name: shop.name || "",
+                location: shop.location || "",
+                contact_info: shop.contact_info || "",
+                type: shop.type || "",
+                image: shop.image || null,
+            });
+        } else {
+            setFormData({
+                name: "",
+                location: "",
+                contact_info: "",
+                type: "",
+                image: null,
+            });
+        }
+    }, [shop]);
 
     useEffect(() => {
         if (shop && focusOnEdit && nameInputRef.current) {
@@ -36,71 +61,49 @@ const ShopForm = ({ shop, focusOnEdit }) => {
         }
     }, [shop, focusOnEdit]);
 
-    const [error, setError] = useState("");
-    const [isEmpty, setIsEmpty] = useState(true);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (shop) {
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                name: shop.name,
-                location: shop.location,
-                contact_info: shop.contact_info,
-                type: shop.type,
-                image: shop.image,
-            }));
-        } else {
-            setFormData({
-                name: "",
-                location: "",
-                contact_info: "",
-                type: "",
-                image: "",
-            });
-        }
-    }, [shop]);
-
     useEffect(() => {
         const checkIsEmpty = () => {
             const { name, location, contact_info, type } = formData;
-            if (name && location && contact_info && type) {
-                setIsEmpty(false);
-            } else {
-                setIsEmpty(true);
-            }
+            setIsEmpty(!name || !location || !contact_info || !type);
         };
         checkIsEmpty();
     }, [formData]);
 
-    useEffect(() => {
-        if (focusOnEdit && nameInputRef.current) {
-            nameInputRef.current.focus();
-        }
-    }, [focusOnEdit]);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
+        let headers = "";
+
         const data = new FormData();
         data.append("name", formData.name);
         data.append("location", formData.location);
         data.append("contact_info", formData.contact_info);
         data.append("type", formData.type);
         data.append("opening_hours", JSON.stringify(openingHours));
-        if (formData.image) {
+        if (formData.image instanceof File) {
             data.append("image", formData.image);
         }
 
         try {
+            let response;
             if (shop) {
-                alert(`The ${shop.name} was updated`);
-                dispatch(updateShop);
+                response = await dispatch(
+                    updateShop({ shopId: shop.id, data, headers })
+                );
+                console.log("response: ", response);
+                if (response.payload?.id) navigate(`/shop/${shop.id}`);
+            } else {
+                response = await dispatch(createShop(data));
+                navigate(`/shop/${response.payload?.id}`);
             }
-            const response = dispatch(createShop);
-            console.info("Shop saved!", response.data);
-            navigate(`/shop/${shop.id}`);
-        } catch (error) {
-            console.error("Save shop error:", error);
+            if (!response.error) {
+                alert(`Shop ${shop ? "updated" : "created"} successfully!`);
+            } else {
+                setError(response.error.message);
+            }
+        } catch (err) {
+            setError(err.message || "An error occurred while saving the shop.");
+            console.error("Save shop error:", err);
         }
     };
 
@@ -115,9 +118,9 @@ const ShopForm = ({ shop, focusOnEdit }) => {
     return (
         <div className="container mx-auto p-4 sm:p-6 md:p-8 lg:p-10">
             <h1 className="text-2xl sm:text-3xl md:text-4xl mb-4 font-semibold">
-                {!shop ? "Create Shop" : `Update: ${shop?.name}`}
+                {!shop ? "Create Shop" : `Update: ${formData.name}`}
             </h1>
-            <form onSubmit={(e) => handleSubmit(e)} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="mb-4">
                     <label
                         htmlFor="name"

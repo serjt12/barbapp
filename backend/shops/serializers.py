@@ -4,6 +4,7 @@ from pytz import timezone as pytz_timezone
 from datetime import datetime
 from rest_framework import serializers
 from .models import User, Profile, Shop, Employee, Service, Appointment, Review, Role
+from .base64 import Base64ImageField
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,7 +28,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class ShopSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
-    image = serializers.ImageField(required=False, use_url=False)
+    image = Base64ImageField(required=False, use_url=False)
 
     class Meta:
         model = Shop

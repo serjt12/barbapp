@@ -17,9 +17,11 @@ export const fetchProducts = createAsyncThunk(
 // Fetch product details by id
 export const fetchProductDetails = createAsyncThunk(
     "products/fetchProductDetails",
-    async (productId, { rejectWithValue }) => {
+    async ({ shopId, productId }, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.get(`/products/${productId}/`);
+            const response = await axiosInstance.get(
+                `/products/${shopId}/${productId}/`
+            );
             return response.data.product;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -31,6 +33,7 @@ export const fetchProductDetails = createAsyncThunk(
 export const createProduct = createAsyncThunk(
     "products/createProduct",
     async ({ shopId, productData }, { rejectWithValue }) => {
+        console.log("productData: ", productData);
         try {
             const response = await axiosInstance.post(
                 `/products/${shopId}/`,

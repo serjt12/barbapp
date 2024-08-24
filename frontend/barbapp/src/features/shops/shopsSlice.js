@@ -4,13 +4,18 @@ import axiosInstance from "../../services/axiosConfig";
 // Async thunk to create a shop
 export const createShop = createAsyncThunk(
     "shop/createShop",
-    async ({ shop }, { rejectWithValue }) => {
-        const response = await axiosInstance.post("/shops/", shop, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-        return response.data;
+    async (data, { rejectWithValue }) => {
+        console.log("data: ", data);
+        try {
+            const response = await axiosInstance.post("/shops/", data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
     }
 );
 
@@ -19,7 +24,7 @@ export const fetchShops = createAsyncThunk(
     "shop/fetchShops",
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.get("/shops");
+            const response = await axiosInstance.get("/shops/");
             return response.data.shops;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -54,13 +59,14 @@ export const fetchShopDetails = createAsyncThunk(
 
 export const updateShop = createAsyncThunk(
     "shop/updateShop",
-    async ({ shopData }, { rejectWithValue }) => {
+    async ({ shopId, data, headers }, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.put(
-                `/shops/${shopData.id}/update`,
-                shopData
+                `/shops/${shopId}/`,
+                data,
+                { headers: headers }
             );
-            return response.data; // Return updated shop data
+            return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
@@ -98,7 +104,7 @@ const shopSlice = createSlice({
     initialState: {
         shops: [],
         selectedShop: null,
-        status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
+        status: "idle",
         error: null,
         ownedShops: [],
         services: [],
@@ -115,7 +121,7 @@ const shopSlice = createSlice({
             })
             .addCase(createShop.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                state.shops = action.payload;
+                state.selectedShop = action.payload;
             })
             .addCase(createShop.rejected, (state, action) => {
                 state.status = "failed";

@@ -13,6 +13,7 @@ class ProductListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, shop_id=None):
+        logger.debug(f"Request data: {request.data}")
         if shop_id:
             # Retrieve all products for a specific shop
             products = Product.objects.filter(shop_id=shop_id)

@@ -47,9 +47,11 @@ const Profile = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchOwnedShops());
-    }, [dispatch]);
-    const shops = useSelector(selectOwnedShops);
+        if (showOwnedShopsList) {
+            dispatch(fetchOwnedShops());
+        }
+    }, [showOwnedShopsList, dispatch]);
+    const ownedShops = useSelector(selectOwnedShops);
 
     const handleLogout = async () => {
         try {
@@ -132,7 +134,7 @@ const Profile = () => {
 
     const handleToggleShopForm = () => {
         setShowShopForm(!showShopForm);
-        setSelectedShop(null); // Reset selected shop when toggling the form
+        setSelectedShop(null);
     };
 
     const handleSelectEditShop = (shop) => {
@@ -293,9 +295,9 @@ const Profile = () => {
                         <ShopForm focusOnEdit={true} shop={selectedShop} />
                     )}
                     {showOwnedShopsList ? (
-                        shops.length > 0 ? (
+                        ownedShops.length > 0 ? (
                             <ShopsList
-                                shops={shops}
+                                shops={ownedShops}
                                 onEditShop={handleSelectEditShop}
                             />
                         ) : (

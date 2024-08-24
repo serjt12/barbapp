@@ -36,9 +36,12 @@ axiosInstance.interceptors.response.use(
             // Handle token refresh here
             try {
                 // Call your refresh token logic
-                const response = await axios.post("/token/refresh", {
-                    refresh: localStorage.getItem("refreshToken"),
-                });
+                const response = await axios.post(
+                    `${BASE_URL}/token/refresh/`,
+                    {
+                        refresh: localStorage.getItem("refreshToken"),
+                    }
+                );
                 const newAccessToken = response.data.access;
                 localStorage.setItem("accessToken", newAccessToken);
                 originalRequest.headers[
