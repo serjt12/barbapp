@@ -196,10 +196,6 @@ keras==3.4.1
     #   tensorflow-intel
 kivy==2.3.0
     # via -r requirements.in
-kivy-deps-angle==0.4.0
-    # via
-    #   -r requirements.in
-    #   kivy
 kivy-deps-glew==0.3.1
     # via
     #   -r requirements.in
