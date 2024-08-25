@@ -36,7 +36,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['barbapp.onrender.com']
+ALLOWED_HOSTS = ['localhost', 'localhost:8000', 'barbapp.onrender.com']
 
 # Application definition
 
@@ -129,6 +129,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'barbapp.middleware.CustomExceptionMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'barbapp.urls'
