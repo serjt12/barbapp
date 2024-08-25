@@ -25,7 +25,7 @@ jobs:
               run: |
                   python -m venv venv
                   source venv/bin/activate
-                  python -m pip install --upgrade pip wheel setuptools
+                  python -m pip install --upgrade pip wheel setuptools==69.0.0
                   pip install -r backend/requirements.txt
 
             - name: Set environment variables
