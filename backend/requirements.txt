@@ -20,7 +20,6 @@ ordereddict==1.1
 protobuf==5.27.3
 pyOpenSSL==24.2.1
 pytz==2024.1
-pywin32==306
 thread==2.0.5
 tornado==6.4.1
 wincertstore==0.2.1
