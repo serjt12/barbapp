@@ -28,8 +28,9 @@ jobs:
 
             - name: Set environment variables
               run: |
-                  echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
-                  echo "DJANGO_SETTINGS_MODULE=backend.barbapp.settings" >> $GITHUB_ENV
+                  echo "PYTHONPATH=$(pwd)/backend" >> $GITHUB_ENV
+                  echo "DJANGO_SETTINGS_MODULE=barbapp.settings" >> $GITHUB_ENV
+                  echo "SECRET_KEY=your_secret_key_here" >> $GITHUB_ENV
 
             - name: Run tests
               run: |
