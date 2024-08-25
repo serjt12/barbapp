@@ -13,6 +13,10 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - name: Debug Python Path
+              run: |
+                  echo $PYTHONPATH
+                    python -c "import sys; print(sys.path)"
             - name: Checkout code
               uses: actions/checkout@v4
 
@@ -30,9 +34,11 @@ jobs:
                     echo "backend/requirements.txt not found. Skipping pip install."
                   fi
 
-            - name: Run tests
-              env:
-                  DJANGO_SETTINGS_MODULE: backend.barbapp.settings
+            - name: Set environment variables
               run: |
-                  export PYTHONPATH=backend
+                  echo "PYTHONPATH=$(pwd)/backend" >> $GITHUB_ENV
+                  echo "DJANGO_SETTINGS_MODULE=barbapp.settings" >> $GITHUB_ENV
+
+            - name: Run tests
+              run: |
                   pytest
