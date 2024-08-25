@@ -37,14 +37,9 @@ jobs:
                   echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
                   echo "DB_PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
 
-            - name: Debug environment variables (Remove after testing)
+            - name: Run migrations
               run: |
-                  echo "SECRET_KEY=${{ secrets.SECRET_KEY }}"
-                  echo "DB_NAME=${{ secrets.DB_NAME }}"
-                  echo "DB_USER=${{ secrets.DB_USER }}"
-                  echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
-                  echo "DB_HOST=${{ secrets.DB_HOST }}"
-                  echo "DB_PORT=${{ secrets.DB_PORT }}"
+                  python manage.py migrate
 
             - name: Run tests
               run: |
