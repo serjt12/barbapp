@@ -209,7 +209,7 @@ STATICFILES_DIRS = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
-    "https://barbapp-front.onrender.com/"
+    "https://barbapp-front.onrender.com"
 ]
 
 # For allowing all origins (use with caution, mainly for development)
