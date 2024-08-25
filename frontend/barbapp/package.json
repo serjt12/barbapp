@@ -29,7 +29,7 @@
     "web-vitals": "2.1.4"
   },
   "scripts": {
-    "start": "set PORT=3006 && craco --openssl-legacy-provider start",
+    "start": "set PORT=3000 && craco --openssl-legacy-provider start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
