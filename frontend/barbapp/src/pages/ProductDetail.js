@@ -31,7 +31,7 @@ const ProductDetail = () => {
 
     useEffect(() => {
         dispatch(fetchProductDetails({ shopId, productId: id }));
-    }, [dispatch, id]);
+    }, [dispatch, id, shopId]);
 
     if (status === "loading") {
         return (
