@@ -36,7 +36,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['localhost', 'localhost:8000', 'barbapp.onrender.com']
+ALLOWED_HOSTS = ['localhost', 'localhost:8000', 'barbapp.onrender.com', 'barbapp.onrender.com:8000']
 
 # Application definition
 
@@ -209,6 +209,7 @@ STATICFILES_DIRS = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
+    "https://barbapp-front.onrender.com/"
 ]
 
 # For allowing all origins (use with caution, mainly for development)
