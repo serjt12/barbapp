@@ -27,10 +27,31 @@ jobs:
                   pip install -r backend/requirements.txt
 
             - name: Set environment variables
+              env:
+                  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+                  DB_NAME: ${{ secrets.DB_NAME }}
+                  DB_USER: ${{ secrets.DB_USER }}
+                  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+                  DB_HOST: ${{ secrets.DB_HOST }}
+                  DB_PORT: ${{ secrets.DB_PORT }}
               run: |
                   echo "PYTHONPATH=$(pwd)/backend" >> $GITHUB_ENV
                   echo "DJANGO_SETTINGS_MODULE=barbapp.settings" >> $GITHUB_ENV
-                  echo "SECRET_KEY=your_secret_key_here" >> $GITHUB_ENV
+                  echo "SECRET_KEY=$SECRET_KEY" >> $GITHUB_ENV
+                  echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
+                  echo "DB_USER=$DB_USER" >> $GITHUB_ENV
+                  echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
+                  echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
+                  echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
+
+            - name: Debug environment variables (Remove after testing)
+              run: |
+                  echo "SECRET_KEY=$SECRET_KEY"
+                  echo "DB_NAME=$DB_NAME"
+                  echo "DB_USER=$DB_USER"
+                  echo "DB_PASSWORD=$DB_PASSWORD"
+                  echo "DB_HOST=$DB_HOST"
+                  echo "DB_PORT=$DB_PORT"
 
             - name: Run tests
               run: |
