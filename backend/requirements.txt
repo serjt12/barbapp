@@ -23,5 +23,5 @@ pytz==2024.1
 thread==2.0.5
 tornado==6.4.1
 wincertstore==0.2.1
-xmlrpclib==1.21.6
+xmlrpclib==1.21.2
 zipp==3.20.0
