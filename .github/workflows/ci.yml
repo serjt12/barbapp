@@ -31,6 +31,12 @@ jobs:
                   echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
                   echo "DJANGO_SETTINGS_MODULE=backend.barbapp.settings" >> $GITHUB_ENV
 
+            - name: Debug Python Path
+              run: |
+                  echo $PYTHONPATH
+                  python -c "import sys; print(sys.path)"
+                  ls -R  # This will print out the entire directory structure
+
             - name: Run tests
               run: |
                   pytest
