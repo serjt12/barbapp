@@ -22,6 +22,6 @@ pyOpenSSL==24.2.1
 pytz==2024.1
 thread==2.0.5
 tornado==6.4.1
-wincertstore==0.2.1
+wincertstore==0.0.1
 xmlrpc.client==1.21.2
 zipp==3.20.0
