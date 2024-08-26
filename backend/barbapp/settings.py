@@ -229,8 +229,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 
 MEDIA_URL = '/media/'
-MEDIA_BASE_DIR = Path(__file__).resolve().parent
-MEDIA_ROOT = os.path.join(MEDIA_BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
