@@ -131,6 +131,9 @@ MIDDLEWARE = [
     'barbapp.middleware.CustomExceptionMiddleware',
 ]
 
+if env("ENVIRONMENT") == "development":
+    MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')
+
 ROOT_URLCONF = 'barbapp.urls'
 
 TEMPLATES = [
@@ -254,6 +257,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(MEDIA_BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
