@@ -232,7 +232,7 @@ const ShopForm = ({ shop, focusOnEdit }) => {
                         <option value="beauty_supplier">Beauty Supplier</option>
                     </select>
                 </div>
-                {/* {formData.type === "beauty_supplier" ? (
+                {formData.type === "beauty_supplier" ? (
                     <ProductsField
                         formDataProducts={formProductData.products}
                         onProductChange={handleProductChange}
@@ -241,7 +241,7 @@ const ShopForm = ({ shop, focusOnEdit }) => {
                     />
                 ) : (
                     "<ServicesField />"
-                )} */}
+                )}
                 <ImageUploader
                     label="Shop Image"
                     name="image"

@@ -2,9 +2,6 @@ const tailwindcss = require("tailwindcss");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 module.exports = {
-    eslint: {
-        enable: false,
-    },
     style: {
         postcssOptions: {
             plugins: [
@@ -15,8 +12,9 @@ module.exports = {
     },
     webpack: {
         plugins: [
-            process.env.NODE_ENV === "development" &&
-                new ReactRefreshWebpackPlugin(),
-        ].filter(Boolean),
+            ...(process.env.NODE_ENV === "development"
+                ? [new ReactRefreshWebpackPlugin()]
+                : []),
+        ],
     },
 };
