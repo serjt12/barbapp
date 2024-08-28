@@ -133,9 +133,6 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-if env("ENVIRONMENT") == "development":
-    MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')
-
 ROOT_URLCONF = 'barbapp.urls'
 
 TEMPLATES = [
@@ -208,13 +205,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'frontend' / 'barbapp' / 'public',
-]
-
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
-    "https://barbapp-front.onrender.com"
+    "https://barbapp-front.onrender.com",
+    "http://0.0.0.0",
+    "http://localhost"
 ]
 
 # For allowing all origins (use with caution, mainly for development)

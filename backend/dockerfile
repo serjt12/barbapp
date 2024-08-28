@@ -1,0 +1,19 @@
+# Use the official Python image.
+FROM python:3.12.0-slim
+
+WORKDIR /backend
+# Set environment variables.
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Set the working directory.
+
+# Install dependencies.
+COPY requirements.txt ./requirements.txt
+RUN pip install --upgrade pip && \
+  pip install --no-cache-dir --prefer-binary -r requirements.txt
+
+# Copy project files.
+COPY . .
+
+ENTRYPOINT ["/backend/entrypoint.sh"]
