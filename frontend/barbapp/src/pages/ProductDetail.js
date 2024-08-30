@@ -26,12 +26,13 @@ const ProductDetail = () => {
     console.log("shopId: ", shopId);
     const dispatch = useDispatch();
     const product = useSelector(selectProducts);
+    console.log("product: ", product);
     const status = useSelector(selectProductStatus);
     const error = useSelector(selectProductError);
 
     useEffect(() => {
         dispatch(fetchProductDetails({ shopId, productId: id }));
-    }, [dispatch, id]);
+    }, [dispatch, id, shopId]);
 
     if (status === "loading") {
         return (

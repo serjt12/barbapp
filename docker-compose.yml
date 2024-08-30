@@ -1,0 +1,58 @@
+services:
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        volumes:
+            - ./backend/:/backend/
+        command: python manage.py runserver 0.0.0.0:8000
+        ports:
+            - "8000:8000"
+        depends_on:
+            - postgres
+        networks:
+            - barbapp-network
+        environment:
+            - DB_HOST=${DB_HOST}
+            - DB_PORT=${DB_PORT}
+            - DB_NAME=${DB_NAME}
+            - DB_USER=${DB_USER}
+            - DB_PASSWORD=${DB_PASSWORD}
+
+    frontend:
+        build:
+            context: ./frontend/barbapp
+            dockerfile: Dockerfile
+        volumes:
+            - ./frontend/barbapp:/app
+            - /app/node_modules
+        command: yarn start
+        ports:
+            - "3000:3000"
+        environment:
+            - REACT_APP_API_BASE_URL=http://localhost:8000/api
+            - CHOKIDAR_USEPOLLING=true
+            - WDS_SOCKET_HOST=0.0.0.0
+            - WDS_SOCKET_PORT=3000
+        networks:
+            - barbapp-network
+
+    postgres:
+        image: postgres:13
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=${DB_NAME}
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+        ports:
+            - "5432:5432"
+        networks:
+            - barbapp-network
+
+networks:
+    barbapp-network:
+        driver: bridge
+
+volumes:
+    postgres_data:

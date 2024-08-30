@@ -11,6 +11,8 @@ import environ
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import UserSerializer
+from django.utils import timezone
+from rest_framework_simplejwt.exceptions import TokenError
 
 env = environ.Env()
 logger = logging.getLogger(__name__)
@@ -50,21 +52,27 @@ class LoginView(APIView):
         password = request.data.get('password')
         logger.debug(f"Attempting to authenticate user: {username}")
 
-        user = authenticate(username=username, password=password)
-        if user:
+        if not username or not password:
+            logger.warning("Login attempt with missing credentials")
+            return Response({'error': 'Both username and password are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            auth_login(request, user)
             user.last_login = timezone.now()
             user.save(update_fields=['last_login'])
 
-            auth_login(request, user)
-
             refresh = RefreshToken.for_user(user)
+            logger.info(f"User {username} successfully authenticated")
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
                 'user': UserSerializer(user).data
             })
-        logger.debug(f"Invalid credentials for user: {username}")
-        return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            logger.warning(f"Failed login attempt for user: {username}")
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
@@ -80,17 +88,19 @@ class RefreshTokenView(APIView):
         refresh_token = request.data.get('refresh')
         if refresh_token:
             try:
-                new_tokens = RefreshToken(refresh_token)
+                token = RefreshToken(refresh_token)
                 return Response({
-                    'access': str(new_tokens.access_token),
-                    'refresh': str(refresh_token)
+                    'access': str(token.access_token),
+                    'refresh': str(token)  # This will be a new refresh token
                 })
-            except Exception as e:
+            except TokenError as e:
                 logger.error(f"Error refreshing token: {e}")
-                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'Invalid or expired token'}, status=status.HTTP_401_UNAUTHORIZED)
+            except Exception as e:
+                logger.error(f"Unexpected error refreshing token: {e}")
+                return Response({'error': 'An unexpected error occurred'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({'error': 'No refresh token provided'}, status=status.HTTP_400_BAD_REQUEST)
 
-from django.utils import timezone
 
 class GoogleLogin(APIView):
     permission_classes = [AllowAny]

@@ -1,10 +1,7 @@
-/* eslint-disable */
 const tailwindcss = require("tailwindcss");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 module.exports = {
-    eslint: {
-        enable: false,
-    },
     style: {
         postcssOptions: {
             plugins: [
@@ -12,5 +9,12 @@ module.exports = {
                 require("autoprefixer"),
             ],
         },
+    },
+    webpack: {
+        plugins: [
+            ...(process.env.NODE_ENV === "development"
+                ? [new ReactRefreshWebpackPlugin()]
+                : []),
+        ],
     },
 };

@@ -69,6 +69,7 @@ export const register = createAsyncThunk(
                 first_name: firstName,
                 last_name: lastName,
             });
+            setLocalStorageItems(response.data);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);
