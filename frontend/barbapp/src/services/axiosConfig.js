@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Define the base URL from an environment variable
 const BASE_URL =
     process.env.REACT_APP_API_BASE_URL || "http://localhost:8000/api";
 
@@ -11,49 +10,66 @@ const axiosInstance = axios.create({
     },
 });
 
-// Request Interceptor to add Authorization header
+// Request Interceptor
 axiosInstance.interceptors.request.use(
     (config) => {
-        // Assuming you have a function to get the access token
         const accessToken = localStorage.getItem("accessToken");
-
         if (accessToken) {
             config.headers["Authorization"] = `Bearer ${accessToken}`;
         }
-
         return config;
     },
-    (error) => Promise.reject(new Error(error))
+    (error) => Promise.reject(error)
 );
 
-// Response Interceptor to handle errors and refresh tokens
+// Response Interceptor
 axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
-
-        if (error.response && error.response.status === 401) {
-            // Handle token refresh here
+        if (
+            error.response &&
+            error.response.status === 401 &&
+            !originalRequest._retry
+        ) {
+            originalRequest._retry = true;
             try {
-                // Call your refresh token logic
+                const refreshToken = localStorage.getItem("refreshToken");
+                if (!refreshToken) {
+                    throw new Error("No refresh token available");
+                }
+
                 const response = await axios.post(
                     `${BASE_URL}/token/refresh/`,
                     {
-                        refresh: localStorage.getItem("refreshToken"),
+                        refresh: refreshToken,
                     }
                 );
-                const newAccessToken = response.data.access;
+
+                const { access: newAccessToken, refresh: newRefreshToken } =
+                    response.data;
+
                 localStorage.setItem("accessToken", newAccessToken);
+                localStorage.setItem("refreshToken", newRefreshToken);
+
+                axiosInstance.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${newAccessToken}`;
                 originalRequest.headers[
                     "Authorization"
                 ] = `Bearer ${newAccessToken}`;
+
                 return axiosInstance(originalRequest);
             } catch (refreshError) {
+                console.error("Error refreshing token:", refreshError);
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                // Redirect to login or handle authentication failure
+                window.location.href = "/login";
                 return Promise.reject(refreshError);
             }
         }
-
-        return Promise.reject(new Error(error));
+        return Promise.reject(error);
     }
 );
 

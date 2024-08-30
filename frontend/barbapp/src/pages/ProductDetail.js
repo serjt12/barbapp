@@ -26,6 +26,7 @@ const ProductDetail = () => {
     console.log("shopId: ", shopId);
     const dispatch = useDispatch();
     const product = useSelector(selectProducts);
+    console.log("product: ", product);
     const status = useSelector(selectProductStatus);
     const error = useSelector(selectProductError);
 

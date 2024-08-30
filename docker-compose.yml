@@ -6,10 +6,9 @@ services:
         volumes:
             - ./backend/:/backend/
         command: python manage.py runserver 0.0.0.0:8000
-        expose:
-            - "8000"
+        ports:
+            - "8000:8000"
         depends_on:
-            - frontend
             - postgres
         networks:
             - barbapp-network
@@ -19,36 +18,24 @@ services:
             - DB_NAME=${DB_NAME}
             - DB_USER=${DB_USER}
             - DB_PASSWORD=${DB_PASSWORD}
-        develop:
-            watch:
-                - action: sync
-                  path: ./backend
-                  target: /backend
-                  ignore:
-                      - venv/
-                      - __pycache__/
-                - action: rebuild
-                  path: requirements.txt
 
     frontend:
         build:
             context: ./frontend/barbapp
             dockerfile: Dockerfile
         volumes:
-            - ./frontend/barbapp/build:/frontend/barbapp/build
+            - ./frontend/barbapp:/app
+            - /app/node_modules
+        command: yarn start
+        ports:
+            - "3000:3000"
+        environment:
+            - REACT_APP_API_BASE_URL=http://localhost:8000/api
+            - CHOKIDAR_USEPOLLING=true
+            - WDS_SOCKET_HOST=0.0.0.0
+            - WDS_SOCKET_PORT=3000
         networks:
             - barbapp-network
-        env_file:
-            - .env
-        develop:
-            watch:
-                - action: sync
-                  path: ./frontend/barbapp
-                  target: /frontend/barbapp
-                  ignore:
-                      - node_modules/
-                - action: rebuild
-                  path: package.json
 
     postgres:
         image: postgres:13
@@ -58,24 +45,14 @@ services:
             - POSTGRES_DB=${DB_NAME}
             - POSTGRES_USER=${DB_USER}
             - POSTGRES_PASSWORD=${DB_PASSWORD}
-        networks:
-            - barbapp-network
-
-    nginx:
-        image: nginx:latest
-        volumes:
-            - ./frontend/barbapp/nginx/nginx.config:/etc/nginx/conf.d/default.conf
-            - ./frontend/barbapp/build:/frontend/barbapp/build
-            - ./backend:/backend
         ports:
-            - "80:80"
-        depends_on:
-            - backend
+            - "5432:5432"
         networks:
             - barbapp-network
 
 networks:
     barbapp-network:
         driver: bridge
+
 volumes:
     postgres_data:

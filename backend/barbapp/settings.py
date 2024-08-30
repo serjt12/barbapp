@@ -36,7 +36,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['localhost', 'localhost:8000', 'barbapp.onrender.com', 'barbapp.onrender.com:8000']
+ALLOWED_HOSTS = ['localhost', 'barbapp.onrender.com']
 
 # Application definition
 
@@ -133,7 +133,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'barbapp.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATES = [
     {
@@ -181,9 +181,9 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
+    'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
@@ -209,11 +209,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
     "https://barbapp-front.onrender.com",
     "http://0.0.0.0",
-    "http://localhost"
+    "http://localhost",
+    'http://127.0.0.1'
+    
 ]
 
 # For allowing all origins (use with caution, mainly for development)
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = env.bool("DEBUG", default=False)
 
 CORS_ALLOW_METHODS = [
     "GET",
@@ -232,7 +234,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ENVIRONMENT = env("ENVIRONMENT", default="development")
 
 MEDIA_URL = '/media/'
-MEDIA_BASE_DIR = Path(__file__).resolve().parent
+MEDIA_BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = os.path.join(MEDIA_BASE_DIR, 'media')
 
 # Internationalization
