@@ -21,8 +21,14 @@ RUN pip install --upgrade pip && \
 # Copy project
 COPY . .
 
+# Set a default SECRET_KEY for collectstatic
+ENV SECRET_KEY=dummy_key_for_collectstatic
+
 # Collect static files
 RUN python manage.py collectstatic --noinput
+
+# Remove the dummy SECRET_KEY
+ENV SECRET_KEY=
 
 # Run gunicorn
 CMD gunicorn barbapp.wsgi:application --bind 0.0.0.0:$PORT
