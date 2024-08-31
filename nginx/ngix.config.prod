@@ -4,12 +4,12 @@ http {
     }
 
     upstream frontend {
-        server frontend:3000;  # Assuming your React app runs on port 3000
+        server frontend:3000;
     }
 
     server {
         listen ${PORT};
-        server_name https://barbapp-1.onrender.com;  # Replace with your actual domain
+        server_name https://barbapp-1.onrender.com;
 
         location / {
             proxy_pass http://frontend;
@@ -24,11 +24,13 @@ http {
         }
 
         location /media/ {
-            alias /backend/media/;  # Replace with the actual path to your media files
+            alias /backend/media/;
             expires 30d;
             add_header Cache-Control "public, max-age=2592000";
         }
 
-        # Add SSL configuration here if you're using HTTPS
+        listen 443 ssl;
+        ssl_certificate /etc/letsencrypt/fullchain.pem; # Path to your SSL certificate
+        ssl_certificate_key /etc/letsencrypt/private.key; # Path to your SSL private key
     }
 }
