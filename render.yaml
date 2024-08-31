@@ -26,11 +26,11 @@ services:
         fromDatabase:
           name: barbapp-db
           property: password
-      - key: DJANGO_SECRET_KEY
+      - key: SECRET_KEY
         generateValue: true
-      - key: DJANGO_DEBUG
+      - key: DEBUG
         value: "False"
-      - key: DJANGO_ALLOWED_HOSTS
+      - key: ALLOWED_HOSTS
         value: ".onrender.com"
     healthCheckPath: /api/healthcheck
 
