@@ -26,29 +26,23 @@ services:
         fromDatabase:
           name: barbapp-db
           property: password
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: ".onrender.com"
     healthCheckPath: /api/healthcheck
 
-  # Frontend service
-  - type: web
-    name: barbapp-frontend
-    runtime: docker
-    dockerfilePath: ./frontend/Dockerfile.prod
-    dockerContext: ./frontend
-    envVars:
-      - key: REACT_APP_API_URL
-        value: https://barbapp-backend.onrender.com
-
-  # Nginx service
+  # Nginx service (serving frontend and routing to backend)
   - type: web
     name: barbapp-nginx
     runtime: docker
     dockerfilePath: ./nginx/Dockerfile
-    dockerContext: ./nginx
+    dockerContext: .
     envVars:
       - key: BACKEND_URL
         value: https://barbapp-backend.onrender.com
-      - key: FRONTEND_URL
-        value: https://barbapp-frontend.onrender.com
 
 # Database
 databases:

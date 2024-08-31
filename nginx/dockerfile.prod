@@ -1,10 +1,19 @@
+# Build stage
+FROM node:18.17.0-alpine as build
+
+WORKDIR /app
+
+COPY frontend/barbapp/package.json frontend/barbapp/yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+COPY frontend/barbapp .
+RUN yarn build
+
+# Production stage
 FROM nginx:alpine
 
-# Remove the default nginx configuration file
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Copy the custom nginx configuration file
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 80
 
