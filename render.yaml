@@ -28,27 +28,17 @@ services:
           property: password
     healthCheckPath: /api/healthcheck
 
-  # Frontend service
+  # Frontend service (includes Nginx)
   - type: web
     name: barbapp-frontend
     runtime: docker
-    dockerfilePath: ./frontend/barbapp/Dockerfile.prod
+    dockerfilePath: ./frontend/barbapp/Dockerfile
     dockerContext: ./frontend/barbapp
     envVars:
+      - key: PORT
+        value: 80
       - key: REACT_APP_API_URL
         value: https://barbapp-backend.onrender.com
-
-  # Nginx service
-  - type: web
-    name: barbapp-nginx
-    runtime: docker
-    dockerfilePath: ./nginx/Dockerfile
-    dockerContext: ./nginx
-    envVars:
-      - key: BACKEND_URL
-        value: https://barbapp-backend.onrender.com
-      - key: FRONTEND_URL
-        value: https://barbapp-frontend.onrender.com
 
 # Database
 databases:
