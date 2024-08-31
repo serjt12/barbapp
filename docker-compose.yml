@@ -2,7 +2,7 @@ services:
     backend:
         build:
             context: ./backend
-            dockerfile: Dockerfile
+            dockerfile: dockerfile
         volumes:
             - ./backend/:/backend/
         command: python manage.py runserver 0.0.0.0:8000
@@ -22,7 +22,7 @@ services:
     frontend:
         build:
             context: ./frontend/barbapp
-            dockerfile: Dockerfile
+            dockerfile: dockerfile
         volumes:
             - ./frontend/barbapp:/app
             - /app/node_modules
