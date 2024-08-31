@@ -1,90 +1,67 @@
 services:
   backend:
-    type: web
-    name: backend
-    env: docker
-    docker:
-      buildContext: ./backend
+    build:
+      context: ./backend
       dockerfile: Dockerfile.prod
-    port: 8000
-    envVars:
-      - key: DB_HOST
-        value: ${DB_HOST}
-      - key: DB_PORT
-        value: ${DB_PORT}
-      - key: DB_NAME
-        value: ${DB_NAME}
-      - key: DB_USER
-        value: ${DB_USER}
-      - key: DB_PASSWORD
-        value: ${DB_PASSWORD}
-    dependsOn:
+    expose:
+      - 8000
+    environment:
+      - DB_HOST: ${DB_HOST}
+      - DB_PORT: ${DB_PORT}
+      - DB_NAME: ${DB_NAME}
+      - DB_USER: ${DB_USER}
+      - DB_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - barbapp-network
+    depends_on:
       - postgres
 
   frontend:
-    type: web
-    name: frontend
-    env: docker
-    docker:
-      buildContext: ./frontend
+    build:
+      context: ./frontend/barbapp
       dockerfile: Dockerfile.prod
+    networks:
+      - barbapp-network
 
   nginx:
-    type: web
-    name: nginx
-    env: docker
-    docker:
-      image: nginx:alpine
-      ports:
-        - port: 80
-          targetPort: 80
-        - port: 443
-          targetPort: 443
-      volumes:
-        - source: ./nginx.conf
-          target: /etc/nginx/nginx.conf
-          mode: ro
-        - source: ./certbot/conf
-          target: /etc/letsencrypt
-        - source: ./certbot/www
-          target: /var/www/certbot
-        - source: ./path/to/media
-          target: /path/to/media
-    dependsOn:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+      - ./path/to/media:/path/to/media
+    depends_on:
       - backend
       - frontend
+    networks:
+      - barbapp-network
 
   postgres:
-    type: database
-    name: postgres
-    env: docker
-    docker:
-      image: postgres:13
-      envVars:
-        - key: POSTGRES_DB
-          value: ${DB_NAME}
-        - key: POSTGRES_USER
-          value: ${DB_USER}
-        - key: POSTGRES_PASSWORD
-          value: ${DB_PASSWORD}
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB: ${DB_NAME}
+      - POSTGRES_USER: ${DB_USER}
+      - POSTGRES_PASSWORD: ${DB_PASSWORD}   
+
+    networks:
+      - barbapp-network
 
   certbot:
-    type: job
-    name: certbot
-    env: docker
-    docker:
-      image: certbot/certbot
-      entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-      volumes:
-        - source: ./certbot/conf
-          target: /etc/letsencrypt
-        - source: ./certbot/www
-          target: /var/www/certbot
+    image: certbot/certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"   
 
-volumes:
-  postgres_data:
-    external: true
 
 networks:
   barbapp-network:
-    external: true
+    driver: bridge
+
+volumes:
+  postgres_data:
