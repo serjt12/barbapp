@@ -4,13 +4,14 @@ FROM node:18.17.0-alpine as build
 WORKDIR /app
 
 # Copy the package.json and yarn.lock files
-COPY frontend/barbapp/package.json frontend/barbapp/yarn.lock ./
+# No need to prepend 'frontend/barbapp/' because the context is already in 'frontend/barbapp'
+COPY package.json yarn.lock ./
 
 # Install dependencies
 RUN yarn install --frozen-lockfile
 
 # Copy the remaining frontend source files
-COPY frontend/barbapp .
+COPY . .
 
 # Build the React app
 RUN yarn build
@@ -19,7 +20,7 @@ RUN yarn build
 FROM nginx:alpine
 
 # Copy the custom Nginx configuration
-COPY nginx/nginx.conf.prod /etc/nginx/nginx.conf
+COPY ../nginx/nginx.conf.prod /etc/nginx/nginx.conf
 
 # Copy the built React app from the build stage
 COPY --from=build /app/build /usr/share/nginx/html
