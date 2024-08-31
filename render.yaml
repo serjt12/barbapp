@@ -1,67 +1,57 @@
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
-    expose:
-      - 8000
-    environment:
-      - DB_HOST: ${DB_HOST}
-      - DB_PORT: ${DB_PORT}
-      - DB_NAME: ${DB_NAME}
-      - DB_USER: ${DB_USER}
-      - DB_PASSWORD: ${DB_PASSWORD}
-    networks:
-      - barbapp-network
-    depends_on:
-      - postgres
+  # Backend service
+  - type: web
+    name: barbapp-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile.prod
+    dockerContext: ./backend
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: barbapp-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: barbapp-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: barbapp-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: barbapp-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: barbapp-db
+          property: password
+    healthCheckPath: /api/healthcheck
 
-  frontend:
-    build:
-      context: ./frontend/barbapp
-      dockerfile: Dockerfile.prod
-    networks:
-      - barbapp-network
+  # Frontend service
+  - type: web
+    name: barbapp-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/barbapp/Dockerfile.prod
+    dockerContext: ./frontend/barbapp
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://barbapp-backend.onrender.com
 
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-      - ./path/to/media:/path/to/media
-    depends_on:
-      - backend
-      - frontend
-    networks:
-      - barbapp-network
+  # Nginx service
+  - type: web
+    name: barbapp-nginx
+    runtime: docker
+    dockerfilePath: ./nginx/Dockerfile
+    dockerContext: ./nginx
+    envVars:
+      - key: BACKEND_URL
+        value: https://barbapp-backend.onrender.com
+      - key: FRONTEND_URL
+        value: https://barbapp-frontend.onrender.com
 
-  postgres:
-    image: postgres:13
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB: ${DB_NAME}
-      - POSTGRES_USER: ${DB_USER}
-      - POSTGRES_PASSWORD: ${DB_PASSWORD}   
-
-    networks:
-      - barbapp-network
-
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"   
-
-
-networks:
-  barbapp-network:
-    driver: bridge
-
-volumes:
-  postgres_data:
+# Database
+databases:
+  - name: barbapp-db
+    databaseName: barbapp
+    user: barbapp_user
