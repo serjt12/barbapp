@@ -1,14 +1,11 @@
-# Use the official Nginx image as the base image
+# Use Nginx image
 FROM nginx:alpine
 
-# Copy the custom Nginx configuration
-COPY nginx.conf.prod /etc/nginx/nginx.conf
+# Copy your local Nginx configuration file
+COPY ./nginx.config.prod /etc/nginx/nginx.conf
 
-# Copy the built React app from the build stage
-COPY --from=build /app/build /usr/share/nginx/html
+# Copy static files to the Nginx html directory
+COPY ../frontend/barbapp/build /usr/share/nginx/html
 
-# Expose the port that Nginx will serve on
+# Expose port 80
 EXPOSE 80
-
-# Run Nginx in the foreground
-CMD ["nginx", "-g", "daemon off;"]
