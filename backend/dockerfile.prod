@@ -25,14 +25,16 @@ COPY . .
 # Set a default SECRET_KEY for collectstatic
 ENV SECRET_KEY=dummy_key_for_collectstatic
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
 
 # Remove the dummy SECRET_KEY after collectstatic
 ENV SECRET_KEY=
 
 # Expose the port on which the backend will run
 EXPOSE $PORT
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Run Gunicorn to serve the Django app
 CMD gunicorn barbapp.wsgi:application --bind 0.0.0.0:$PORT
