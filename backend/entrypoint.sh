@@ -1,16 +1,13 @@
-#!/bin/sh
-if [ "$DATABASE" = "postgres" ]
-then
-    echo "Waiting for postgres..."
+# entrypoint.sh
 
-    while ! nc -z $SQL_HOST $SQL_PORT; do
-      sleep 0.1
-    done
+#!/bin/bash
+set -e
 
-    echo "PostgreSQL started"
-fi
+# Run migrations
+python manage.py migrate --noinput
 
-# python manage.py flush --no-input
-python manage.py migrate
+# Collect static files
+python manage.py collectstatic --noinput
 
+# Start the application
 exec "$@"
